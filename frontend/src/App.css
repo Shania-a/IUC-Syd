@@ -1,0 +1,7 @@
+header {
+  background-color: rgba(228, 240, 241);
+}
+header .nav-link {
+  color: rgb(85, 84, 84);
+  text-decoration: none;
+}
