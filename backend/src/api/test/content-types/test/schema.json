@@ -1,5 +1,4 @@
 {
-  "kind": "collectionType",
   "collectionName": "tests",
   "info": {
     "singularName": "test",
@@ -10,12 +9,6 @@
     "draftAndPublish": true
   },
   "pluginOptions": {},
-  "attributes": {
-    "titel": {
-      "type": "string"
-    },
-    "hej": {
-      "type": "string"
-    }
-  }
+  "attributes": {},
+  "kind": "collectionType"
 }
