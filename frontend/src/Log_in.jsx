@@ -1,13 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import iucSydImage from "./assets/IUC-Syd_petrol.png";
 
 function Log_in() {
+  const [token, setToken] = useState(localStorage.getItem("jwt"));
+  const [user, setUser] = useState(null);
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e) {
+  // Körs när sidan laddas och när token ändras.
+  // Frågar Strapi om token är äkta.
+  useEffect(() => {
+    if (!token) return; //om token är tom skipar vi denna funktionen
+
+    async function checkToken() {
+      try {
+        const res = await fetch("http://localhost:1337/api/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        }); // detta ger oss current user
+
+        if (res.ok) {
+          setUser(await res.json()); // om strapi säger att token är äkta då sparar vi current user
+        } else {
+          // token är falsk eller utgången, logga ut
+          localStorage.removeItem("jwt");
+          setToken(null);
+        }
+      } catch (err) {
+        // Strapi kunde inte nås, logga ut
+        localStorage.removeItem("jwt");
+        setToken(null);
+      }
+    }
+
+    checkToken();
+  }, [token]);
+
+  async function signIn(e) {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -26,8 +56,7 @@ function Log_in() {
       }
 
       localStorage.setItem("jwt", data.jwt);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      // Navigera vidare här, t.ex. navigate("/dashboard")
+      setToken(data.jwt); // gör att useEffect kontrollerar token
     } catch (err) {
       setError("Kunde inte nå servern");
     } finally {
@@ -35,6 +64,34 @@ function Log_in() {
     }
   }
 
+  function handleLogout() {
+    localStorage.removeItem("jwt");
+    setToken(null);
+    setUser(null);
+  }
+
+  // Token finns men servern har inte svarat än
+  if (token && !user) {
+    return (
+      <div className="form-container m-auto mt-5">
+        <p>Laddar...</p>
+      </div>
+    );
+  }
+
+  // Inloggad
+  if (token && user) {
+    return (
+      <div className="form-container m-auto mt-5">
+        <h1>Inloggad som {user.username}</h1>
+        <button className="sign" onClick={handleLogout}>
+          Logga ut
+        </button>
+      </div>
+    );
+  }
+
+  // Utloggad: visa formuläret
   return (
     <div className="form-container m-auto mt-5">
       <img
@@ -49,7 +106,7 @@ function Log_in() {
         }}
       />
 
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form" onSubmit={signIn}>
         <div className="input-group">
           <label htmlFor="username">Username</label>
           <input
