@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import iucSydImage from "./assets/IUC-Syd_petrol.png";
+import iucSydImage from "../assets/IUC-Syd_petrol.png";
 
 function Log_in() {
   const [token, setToken] = useState(localStorage.getItem("jwt"));
