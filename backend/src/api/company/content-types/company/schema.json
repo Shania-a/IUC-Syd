@@ -1,0 +1,95 @@
+{
+  "kind": "collectionType",
+  "collectionName": "companies",
+  "info": {
+    "singularName": "company",
+    "pluralName": "companies",
+    "displayName": "Company"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "externalID": {
+      "type": "string",
+      "unique": true
+    },
+    "orgNumber": {
+      "type": "string",
+      "unique": true
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "municipality": {
+      "type": "enumeration",
+      "enum": [
+        "Malmö",
+        "Lund",
+        "Helsingborg",
+        "Kristianstad",
+        "Hässleholm",
+        "Trelleborg",
+        "Ystad",
+        "Landskrona",
+        "Övrigt"
+      ]
+    },
+    "industry": {
+      "type": "enumeration",
+      "enum": [
+        "Tillverkande industri",
+        "Automation & Robotik",
+        "Livsmedel",
+        "IT & Mjukvara",
+        "Miljöteknik & Energi",
+        "Övrigt"
+      ]
+    },
+    "website": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "source": {
+      "type": "enumeration",
+      "default": "manual",
+      "enum": [
+        "manual",
+        "iuc_vs_sync"
+      ]
+    },
+    "lastSyncedAt": {
+      "type": "datetime"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "company"
+    }
+  }
+}
