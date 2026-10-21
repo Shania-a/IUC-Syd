@@ -28,7 +28,7 @@
       "unique": true
     },
     "description": {
-      "type": "blocks"
+      "type": "text"
     },
     "municipality": {
       "type": "enumeration",
