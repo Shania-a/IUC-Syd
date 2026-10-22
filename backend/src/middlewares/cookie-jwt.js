@@ -1,44 +1,52 @@
-// Strapi kör den här funktionen när servern startar och sparar svaret som en middleware
+// Spara som: backend/src/middlewares/cookie-jwt.js  (ersätter den gamla)
+
 module.exports = () => {
-  // Inställningar för cookien. Samma används vid login och logout
+  // Inställningar för cookien. Samma används vid login, förnyelse och logout
   const cookieOptions = {
-    httpOnly: true, // JavaScript i webbläsaren kan inte läsa cookien (skyddar mot att den stjäls)
-    secure: process.env.NODE_ENV === "production", // Kräver https, men bara i produktion (localhost kör http)
-    sameSite: "strict", // Cookien skickas bara från din egen sajt (skyddar mot CSRF)
-    maxAge: 60 * 60 * 1000, // Cookien lever i 1 timme (angivet i millisekunder)
+    httpOnly: true, // JavaScript i webbläsaren kan inte läsa cookien
+    secure: process.env.NODE_ENV === "production", // kräver https i produktion
+    sameSite: "strict", // skickas bara från din egen sajt
+    maxAge: 60 * 60 * 1000, // 1 timme utan aktivitet = utloggad
   };
 
-  // Den här funktionen körs vid varje anrop till Strapi
-  // ctx = anropet och svaret, next = "kör nästa steg i Strapi"
   return async (ctx, next) => {
-    // Är det ett POST-anrop till /api/auth/logout? Då vill användaren logga ut
+    // Logout: radera cookien
     if (ctx.path === "/api/auth/logout" && ctx.method === "POST") {
-      ctx.cookies.set("jwt", null, cookieOptions); // Töm cookien så att den raderas
-      ctx.body = { ok: true }; // Skicka tillbaka ett enkelt svar till frontend
-      return; // Avsluta här, resten av koden behövs inte vid logout
+      ctx.cookies.set("jwt", null, cookieOptions);
+      ctx.body = { ok: true };
+      return;
     }
 
-    // Hämta jwt från cookien som webbläsaren skickade med (finns inte om man är utloggad)
+    // Finns en cookie? Gör om den till en Authorization-header.
+    // usedCookie kommer ihåg att det var cookien vi använde (inte t.ex. admin-panelen)
     const jwt = ctx.cookies.get("jwt");
-    // Om cookien finns och anropet inte redan har en Authorization-header...
+    let usedCookie = false;
     if (jwt && !ctx.request.header.authorization) {
-      // ...lägg till den, så att Strapi tror att token kom på det vanliga sättet
       ctx.request.header.authorization = `Bearer ${jwt}`;
+      usedCookie = true;
     }
 
-    // Släpp vidare anropet till Strapi, som hanterar det (här sker själva inloggningen)
-    // Koden nedanför körs först när Strapi är klar och svaret är på väg tillbaka
     await next();
 
-    // Var det ett POST-anrop till /api/auth/local? Då försökte någon logga in
+    // Login: lägg jwt i cookien och ta bort den ur svaret
     if (
       ctx.path === "/api/auth/local" &&
       ctx.method === "POST" &&
-      ctx.body && // Finns det något svar?
-      ctx.body.jwt // Och innehåller svaret en jwt? (den finns bara om inloggningen lyckades)
+      ctx.body &&
+      ctx.body.jwt
     ) {
-      ctx.cookies.set("jwt", ctx.body.jwt, cookieOptions); // Spara jwt i cookien med inställningarna ovan
-      delete ctx.body.jwt; // Ta bort jwt ur svaret, så frontend aldrig ser den
+      ctx.cookies.set("jwt", ctx.body.jwt, cookieOptions);
+      delete ctx.body.jwt;
+    }
+
+    // NYTT: Förnya. Om användaren var inloggad via cookien och anropet gick bra,
+    // skapa en ny jwt (gäller 1 timme till) och spara den i cookien
+    if (usedCookie && ctx.state.user && ctx.status < 400) {
+      const newJwt = strapi
+        .plugin("users-permissions")
+        .service("jwt")
+        .issue({ id: ctx.state.user.id });
+      ctx.cookies.set("jwt", newJwt, cookieOptions);
     }
   };
 };
