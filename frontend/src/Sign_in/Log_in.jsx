@@ -2,40 +2,42 @@ import React, { useState, useEffect } from "react";
 import iucSydImage from "../assets/IUC-Syd_petrol.png";
 
 function Log_in() {
-  const [token, setToken] = useState(localStorage.getItem("jwt"));
+  // NYTT: ingen "token"-state längre. Token ligger i en cookie som frontend inte kan läsa
   const [user, setUser] = useState(null);
+  // NYTT: ersätter "token && !user". Är true tills servern har svarat på "vem är jag?"
+  const [checking, setChecking] = useState(true);
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Körs när sidan laddas och när token ändras.
-  // Frågar Strapi om token är äkta.
-  useEffect(() => {
-    if (!token) return; //om token är tom skipar vi denna funktionen
+  // NYTT: ersätter checkToken. Ligger utanför useEffect så att både sidladdningen
+  // och signIn kan anropa den
+  // Frågar Strapi "vem är jag?". Webbläsaren skickar cookien automatiskt
+  async function checkUser() {
+    try {
+      const res = await fetch("http://localhost:1337/api/users/me", {
+        // NYTT: gör att webbläsaren skickar med cookien (ersätter Authorization-headern)
+        credentials: "include",
+      });
 
-    async function checkToken() {
-      try {
-        const res = await fetch("http://localhost:1337/api/users/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        }); // detta ger oss current user
-
-        if (res.ok) {
-          setUser(await res.json()); // om strapi säger att token är äkta då sparar vi current user
-        } else {
-          // token är falsk eller utgången, logga ut
-          localStorage.removeItem("jwt");
-          setToken(null);
-        }
-      } catch (err) {
-        // Strapi kunde inte nås, logga ut
-        localStorage.removeItem("jwt");
-        setToken(null);
+      if (res.ok) {
+        setUser(await res.json());
+      } else {
+        setUser(null); // ingen giltig cookie = utloggad
       }
+    } catch (err) {
+      setUser(null); // servern kunde inte nås
+    } finally {
+      // NYTT: oavsett resultat är kollen klar, så "Laddar..." ska bort
+      setChecking(false);
     }
+  }
 
-    checkToken();
-  }, [token]);
+  // ÄNDRAT: körs bara en gång när sidan laddas ([] i stället för [token])
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   async function signIn(e) {
     e.preventDefault();
@@ -46,6 +48,8 @@ function Log_in() {
       const res = await fetch("http://localhost:1337/api/auth/local", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        // NYTT: gör att webbläsaren tar emot och sparar cookien som Strapi skickar
+        credentials: "include",
         body: JSON.stringify({ identifier, password }),
       });
       const data = await res.json();
@@ -55,8 +59,9 @@ function Log_in() {
         return;
       }
 
-      localStorage.setItem("jwt", data.jwt);
-      setToken(data.jwt); // gör att useEffect kontrollerar token
+      // ÄNDRAT: ingen localStorage.setItem eller setToken längre.
+      // Cookien är redan sparad av servern, så vi hämtar bara användaren
+      await checkUser();
     } catch (err) {
       setError("Kunde inte nå servern");
     } finally {
@@ -64,14 +69,18 @@ function Log_in() {
     }
   }
 
-  function handleLogout() {
-    localStorage.removeItem("jwt");
-    setToken(null);
+  // ÄNDRAT: nu async, eftersom servern måste radera cookien
+  async function handleLogout() {
+    // Frontend kan inte själv ta bort cookien (den är httpOnly), så vi ber servern göra det
+    await fetch("http://localhost:1337/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
     setUser(null);
   }
 
-  // Token finns men servern har inte svarat än
-  if (token && !user) {
+  // ÄNDRAT: villkoret är nu "checking" i stället för "token && !user"
+  if (checking) {
     return (
       <div className="form-container m-auto mt-5">
         <p>Laddar...</p>
@@ -79,8 +88,8 @@ function Log_in() {
     );
   }
 
-  // Inloggad
-  if (token && user) {
+  // ÄNDRAT: villkoret är nu bara "user" i stället för "token && user"
+  if (user) {
     return (
       <div className="form-container m-auto mt-5">
         <h1>Inloggad som {user.username}</h1>
@@ -91,7 +100,7 @@ function Log_in() {
     );
   }
 
-  // Utloggad: visa formuläret
+  // Utloggad: visa formuläret (oförändrat)
   return (
     <div className="form-container m-auto mt-5">
       <img
