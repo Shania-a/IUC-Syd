@@ -22,29 +22,38 @@ function Sign_up() {
       return;
     }
 
-    const response = await fetch(
-      "http://localhost:1337/api/auth/local/register",
-      {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: userName,
-          email: email,
-          password: password,
-          company_id: company,
-        }),
-      },
-    );
+    try {
+      const response = await fetch(
+        "http://localhost:1337/api/auth/local/register",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: userName,
+            email: email,
+            password: password,
+            company_id: company,
+          }),
+        },
+      );
 
-    const data = await response.json();
+      const data = await response.json();
+      console.log("Svar från Strapi:", response.status, data);
 
-    if (!response.ok) {
-      setMessage(data.error.message);
-      return;
+      if (!response.ok) {
+        setMessage(data.error?.message || "Registreringen misslyckades");
+        return;
+      }
+
+      setMessage(
+        "Konto skapat! En administratör måste godkänna ditt konto innan du kan logga in.",
+      );
+      setTimeout(redirectToLogin, 4000);
+    } catch (error) {
+      console.error("Fel vid registrering:", error);
+      setMessage("Något gick fel. Kör Strapi, och se Console för detaljer.");
     }
-
-    redirectToLogin();
   }
 
   return (
