@@ -23,15 +23,27 @@ export async function getCompanies({ query = '', municipality = '', industry = '
 }
 
 // Hämta ett enskilt företag via slug tillsammans med medarbetare och logo
-export async function getCompanyBySlug(slug) {
-  const params = new URLSearchParams({
-    'filters[slug][$eq]': slug,
-    'populate[logo]': 'true',
-    'populate[employees]': 'true',
-  });
 
-  const res = await fetch(`${API_URL}/companies?${params.toString()}`);
-  if (!res.ok) throw new Error('Kunde inte hämta företaget');
+export async function getCompanyBySlug(slug) {
+  const params = new URLSearchParams();
+
+  params.append('filters[slug][$eq]', slug);
+  params.append('populate', 'logo');
+
+  const url = `${API_URL}/companies?${params.toString()}`;
+
+  console.log('Hämtar företag från:', url);
+
+  const res = await fetch(url);
   const result = await res.json();
-  return result.data[0] || null;
+
+  console.log('Svar från Strapi:', result);
+
+  if (!res.ok) {
+    throw new Error(
+      result.error?.message || 'Kunde inte hämta företaget'
+    );
+  }
+
+  return result.data?.[0] || null;
 }

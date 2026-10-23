@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getCompanyBySlug } from '../api/companies';
+import CompanyCard from "../components/CompanyCard/CompanyCard";
 
 export default function CompanyDetail() {
   const { slug } = useParams();
@@ -32,32 +33,9 @@ export default function CompanyDetail() {
         &larr; Tillbaka till företagskatalogen
       </Link>
 
-      <div className="p-4 mb-4 bg-light rounded-3 shadow-sm">
-        <div className="d-flex justify-content-between align-items-start">
-          <div>
-            <h1 className="display-6 fw-bold">{data.name}</h1>
-            <p className="text-muted">{data.municipality} &bull; {data.industry}</p>
-          </div>
-          {data.orgNumber && <span className="badge bg-light text-dark border">Org.nr: {data.orgNumber}</span>}
-        </div>
-
-        <hr />
-
-        <div className="row">
-          <div className="col-md-8">
-            <h4>Verksamhet & Erbjudande</h4>
-            <p style={{ whiteSpace: 'pre-line' }}>{data.description || 'Ingen beskrivning angiven.'}</p>
-          </div>
-          <div className="col-md-4 border-start">
-            <h5>Kontaktuppgifter</h5>
-            <ul className="list-unstyled">
-              {data.website && <li><strong>Webb:</strong> <a href={data.website} target="_blank" rel="noreferrer">{data.website}</a></li>}
-              {data.email && <li><strong>E-post:</strong> {data.email}</li>}
-              {data.phone && <li><strong>Telefon:</strong> {data.phone}</li>}
-            </ul>
-          </div>
-        </div>
-      </div>
+     
+      <CompanyCard company={company} />
+      
 
       {/* Sektion för anslutna medarbetare (K40, K41, K42) */}
       <h3 className="mt-4 mb-3">Kontaktpersoner & Medarbetare</h3>
