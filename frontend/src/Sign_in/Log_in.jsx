@@ -156,7 +156,7 @@ function Log_in() {
       </form>
 
       <p className="signup mt-3 mb-0">
-        Don't have an account? Contact <a href="/Sign_up">kkk</a>
+        Don't have an account? <a href="/Sign_up">Sign up</a>
       </p>
     </div>
   );
