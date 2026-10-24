@@ -10,7 +10,7 @@ function Headers() {
         <ul className="nav justify-content-end">
           <li className="nav-item">
             <a
-              className="nav-link active"
+              className="nav-link"
               aria-current="page"
               href="https://iucsyd.se/kontakta-oss/"
             >

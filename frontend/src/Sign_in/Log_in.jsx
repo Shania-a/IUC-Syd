@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import iucSydImage from "../assets/IUC-Syd_petrol.png";
+import { useNavigate, Navigate } from "react-router-dom";
 
 function Log_in() {
   // NYTT: ingen "token"-state längre. Token ligger i en cookie som frontend inte kan läsa
@@ -10,6 +11,7 @@ function Log_in() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // NYTT: ersätter checkToken. Ligger utanför useEffect så att både sidladdningen
   // och signIn kan anropa den
@@ -90,14 +92,7 @@ function Log_in() {
 
   // ÄNDRAT: villkoret är nu bara "user" i stället för "token && user"
   if (user) {
-    return (
-      <div className="form-container m-auto mt-5">
-        <h1>Inloggad som {user.username}</h1>
-        <button className="sign" onClick={handleLogout}>
-          Logga ut
-        </button>
-      </div>
-    );
+    return <Navigate to="/Start_sida" replace />;
   }
 
   // Utloggad: visa formuläret (oförändrat)

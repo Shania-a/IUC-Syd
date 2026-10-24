@@ -5,7 +5,7 @@ import Headers from "./Global_function/Headers";
 import Log_in from "./Sign_in/Log_in";
 import Footer from "./Global_function/Footer";
 import Sign_up from "./register/Sign_up";
-
+import Start_sida from "./stardSidan/Stard_sidan";
 function App() {
   const [count, setCount] = useState(0);
 
@@ -16,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Log_in />} />
         <Route path="/sign_up" element={<Sign_up />} />
+        <Route path="/Start_sida" element={<Start_sida />} />
         <Route path="*" element={<h1>404 – Sidan hittades inte</h1>} />
       </Routes>
       <Footer />
