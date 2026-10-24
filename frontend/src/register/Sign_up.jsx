@@ -1,143 +1,128 @@
 import React, { useState } from "react";
 import iucSydImage from "../assets/IUC-Syd_petrol.png";
 import { useNavigate } from "react-router-dom";
-// har ändrat i signup env filen backend index och plugind.js men navigate funkar inte längre varför
+
 function Sign_up() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [company, setCompany] = useState("");
+  const [gdpr, setGdpr] = useState(false);
   const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   function redirectToLogin() {
     navigate("/");
   }
+
+  function showError(text) {
+    setIsError(true);
+    setMessage(text);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setMessage("Lösenorden matchar inte");
-      return;
-    }
+    if (password !== confirmPassword) return showError("Lösenorden matchar inte");
+    if (!gdpr) return showError("Du måste godkänna behandlingen av personuppgifter");
 
+    setLoading(true);
     try {
-      const response = await fetch(
-        "http://localhost:1337/api/auth/local/register",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: userName,
-            email: email,
-            password: password,
-            company_id: company,
-          }),
-        },
-      );
+      const response = await fetch("http://localhost:1337/api/auth/local/register", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: userName,
+          email,
+          password,
+          company_id: company,
+        }),
+      });
 
       const data = await response.json();
       console.log("Svar från Strapi:", response.status, data);
 
       if (!response.ok) {
-        setMessage(data.error?.message || "Registreringen misslyckades");
-        return;
+        return showError(data.error?.message || "Registreringen misslyckades");
       }
 
-      setMessage(
-        "Konto skapat! En administratör måste godkänna ditt konto innan du kan logga in.",
-      );
+      setIsError(false);
+      setMessage("Konto skapat! En administratör måste godkänna ditt konto innan du kan logga in.");
       setTimeout(redirectToLogin, 4000);
     } catch (error) {
       console.error("Fel vid registrering:", error);
-      setMessage("Något gick fel. Kör Strapi, och se Console för detaljer.");
+      showError("Något gick fel. Kör Strapi, och se Console för detaljer.");
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div className="form-container m-auto mt-5">
+    <div className="form-container wide m-auto mt-5">
       <img
         src={iucSydImage}
         alt="IUC Syd"
-        style={{
-          display: "block",
-          width: 160,
-          maxWidth: "100%",
-          height: "auto",
-          margin: "0 auto 1rem",
-        }}
+        style={{ display: "block", width: 160, maxWidth: "100%", height: "auto", margin: "0 auto 1rem" }}
       />
+      <h1 className="title">Skapa konto</h1>
+      <p className="subtitle">Fyll i dina uppgifter för att ansöka om medlemskap</p>
 
       <form className="form" onSubmit={handleSubmit}>
-        <label>Sign up</label>
+        <div className="form-grid">
+          <div className="input-group">
+            <label htmlFor="username">Username</label>
+            <input id="username" type="text" placeholder="Username" autoComplete="username"
+              value={userName} onChange={(e) => setUserName(e.target.value)} required />
+          </div>
 
-        <div className="input-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            placeholder="Username"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            required
-          />
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
+            <input id="email" type="email" placeholder="Email" autoComplete="email"
+              value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+            <input id="password" type="password" placeholder="Password" autoComplete="new-password"
+              value={password} onChange={(e) => setPassword(e.target.value)} required />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="confirm_password">Confirm password</label>
+            <input id="confirm_password" type="password" placeholder="Confirm password" autoComplete="new-password"
+              value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          </div>
+
+          <div className="input-group full">
+            <label htmlFor="company_id">Company</label>
+            <input id="company_id" type="text" placeholder="Company" autoComplete="organization"
+              value={company} onChange={(e) => setCompany(e.target.value)} required />
+          </div>
         </div>
 
-        <div className="input-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+        <label className="gdpr">
+          <input type="checkbox" checked={gdpr} onChange={(e) => setGdpr(e.target.checked)} />
+          <span>
+            Jag godkänner att IUC Syd behandlar mina personuppgifter (namn, e-post och företag)
+            för att administrera mitt medlemskap, i enlighet med GDPR. Läs mer i vår{" "}
+            <a href="/integritetspolicy" target="_blank" rel="noreferrer">integritetspolicy</a>.
+          </span>
+        </label>
 
-        <div className="input-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        {message && <p className={isError ? "text-danger" : "text-success"}>{message}</p>}
 
-        <div className="input-group">
-          <label htmlFor="Confirm_password">Confirm password</label>
-          <input
-            type="password"
-            id="Confirm_password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="Company_id">Company</label>
-          <input
-            type="text"
-            id="Company_id"
-            placeholder="Company"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
-            required
-          />
-        </div>
-        {message && <p>{message}</p>}
-
-        <button className="sign" type="submit">
-          Sign up
+        <button className="sign" type="submit" disabled={loading}>
+          {loading ? "Skapar konto..." : "Sign up"}
         </button>
       </form>
+
+      <p className="signup mt-3 mb-0">
+        Already have an account? <a href="/">Log in</a>
+      </p>
     </div>
   );
 }
