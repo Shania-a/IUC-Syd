@@ -1,0 +1,57 @@
+{
+  "currentAdmin": { "name": "IUC Syd", "role": "administratör", "initials": "IS" },
+
+  "companies": [
+    { "id": "c1", "name": "Höglunds Verkstad AB", "contactName": "Anna Lindqvist", "contactEmail": "anna.lindqvist@hoglunds.se", "city": "Lund" },
+    { "id": "c2", "name": "Nordisk Plåtteknik AB", "contactName": "Erik Sandberg", "contactEmail": "erik.sandberg@nordiskplat.se", "city": "Helsingborg" },
+    { "id": "c3", "name": "Ystad Pumpteknik AB", "contactName": "Maria Bergström", "contactEmail": "maria@ystadpump.se", "city": "Ystad" },
+    { "id": "c4", "name": "Trelleborg Verktyg AB", "contactName": "Johan Nilsson", "contactEmail": "johan@trelleborgverktyg.se", "city": "Trelleborg" },
+    { "id": "c5", "name": "Sydstål Komponenter AB", "contactName": "Lena Håkansson", "contactEmail": "lena@sydstal.se", "city": "Malmö" }
+  ],
+
+  "users": [
+    { "id": "u1", "firstName": "Anna", "lastName": "Lindqvist", "title": "VD", "email": "anna.lindqvist@hoglunds.se", "companyId": "c1", "status": "approved", "createdAt": "2026-09-02T09:00:00Z", "approvedAt": "2026-09-03T08:00:00Z", "consentGivenAt": "2026-09-03T08:10:00Z", "consentReminderSentAt": null },
+    { "id": "u2", "firstName": "Peter", "lastName": "Ek", "title": "Produktionschef", "email": "peter.ek@hoglunds.se", "companyId": "c1", "status": "approved", "createdAt": "2026-10-10T09:00:00Z", "approvedAt": "2026-10-11T08:00:00Z", "consentGivenAt": "2026-10-20T08:00:00Z", "consentReminderSentAt": null },
+    { "id": "u3", "firstName": "Sara", "lastName": "Holm", "title": "HR-ansvarig", "email": "sara.holm@hoglunds.se", "companyId": "c1", "status": "pending", "createdAt": "2026-10-21T13:20:00Z", "approvedAt": null, "consentGivenAt": null, "consentReminderSentAt": null },
+    { "id": "u4", "firstName": "Erik", "lastName": "Sandberg", "title": "Teknisk chef", "email": "erik.sandberg@nordiskplat.se", "companyId": "c2", "status": "approved", "createdAt": "2026-09-05T10:00:00Z", "approvedAt": "2026-09-05T14:00:00Z", "consentGivenAt": "2026-09-05T14:05:00Z", "consentReminderSentAt": null },
+    { "id": "u5", "firstName": "Karin", "lastName": "Dahl", "title": "Inköpschef", "email": "karin.dahl@nordiskplat.se", "companyId": "c2", "status": "pending", "createdAt": "2026-10-22T08:45:00Z", "approvedAt": null, "consentGivenAt": null, "consentReminderSentAt": null },
+    { "id": "u6", "firstName": "Maria", "lastName": "Bergström", "title": "VD", "email": "maria@ystadpump.se", "companyId": "c3", "status": "approved", "createdAt": "2026-09-08T09:00:00Z", "approvedAt": "2026-09-08T12:00:00Z", "consentGivenAt": "2026-09-08T12:10:00Z", "consentReminderSentAt": null },
+    { "id": "u7", "firstName": "Olof", "lastName": "Berg", "title": "Produktionsingenjör", "email": "olof.berg@ystadpump.se", "companyId": "c3", "status": "approved", "createdAt": "2026-10-01T09:00:00Z", "approvedAt": "2026-10-02T09:00:00Z", "consentGivenAt": null, "consentReminderSentAt": null },
+    { "id": "u8", "firstName": "Johan", "lastName": "Nilsson", "title": "Verkstadschef", "email": "johan@trelleborgverktyg.se", "companyId": "c4", "status": "approved", "createdAt": "2026-09-12T09:00:00Z", "approvedAt": "2026-09-12T15:00:00Z", "consentGivenAt": "2026-09-12T15:02:00Z", "consentReminderSentAt": null },
+    { "id": "u9", "firstName": "Lena", "lastName": "Håkansson", "title": "Kvalitetschef", "email": "lena@sydstal.se", "companyId": "c5", "status": "approved", "createdAt": "2026-09-15T09:00:00Z", "approvedAt": "2026-09-15T11:00:00Z", "consentGivenAt": "2026-09-15T11:03:00Z", "consentReminderSentAt": null },
+    { "id": "u10", "firstName": "Mikael", "lastName": "Strand", "title": "Säljare", "email": "mikael.strand@trelleborgverktyg.se", "companyId": "c4", "status": "pending", "createdAt": "2026-10-23T07:30:00Z", "approvedAt": null, "consentGivenAt": null, "consentReminderSentAt": null },
+    { "id": "u11", "firstName": "Tobias", "lastName": "Lund", "title": "Konsult", "email": "tobias@sydstal.se", "companyId": "c5", "status": "blocked", "createdAt": "2026-10-05T09:00:00Z", "approvedAt": null, "consentGivenAt": null, "consentReminderSentAt": null }
+  ],
+
+  "posts": [
+    { "id": "p1", "type": "post", "authorId": "u8", "text": "Vi bytte leverantör och är väldigt nöjda. Kontakta oss så berättar vi vilken det är och vad det kostade oss att byta.", "status": "reported", "reportReason": "Reklam för en leverantör", "createdAt": "2026-10-22T10:00:00Z" },
+    { "id": "p2", "type": "comment", "authorId": "u5", "text": "Håller med, vi har haft samma problem med orderdata mellan systemen.", "status": "pending", "reportReason": null, "createdAt": "2026-10-22T14:30:00Z" },
+    { "id": "p3", "type": "post", "authorId": "u4", "text": "Någon som testat cobotar för bockning av tunnplåt? Vi funderar på en förstudie.", "status": "approved", "reportReason": null, "createdAt": "2026-10-18T09:00:00Z" }
+  ],
+
+  "messages": [
+    { "id": "m1", "fromUserId": "u9", "subject": "Vill automatisera lackeringen", "body": "Vi lackerar för hand i dag och vill diskutera alternativ. Kan IUC Syd hjälpa oss i ett förprojekt?", "tags": ["Automation"], "status": "new", "createdAt": "2026-10-23T08:15:00Z", "replies": [] },
+    { "id": "m2", "fromUserId": "u4", "subject": "Fråga om stöd för kompetensutveckling", "body": "Vi har tre nyanställda operatörer som behöver utbildning i mätteknik. Finns det något stöd att söka?", "tags": ["Kompetensutveckling"], "status": "new", "createdAt": "2026-10-22T11:00:00Z", "replies": [] },
+    { "id": "m3", "fromUserId": "u6", "subject": "Rekrytering av operatörer", "body": "Vi har svårt att hitta operatörer. Har ni kontakt med skolor eller Teknikcollege som vi kan ta del av?", "tags": ["Attrahera framtida medarbetare"], "status": "new", "createdAt": "2026-10-21T09:30:00Z", "replies": [] }
+  ],
+
+  "needs": [
+    { "id": "n1", "title": "Automatisering av manuell lackering", "companyId": "c5", "category": "Automation", "source": "Privat meddelande", "status": "new", "createdAt": "2026-10-23T08:16:00Z" },
+    { "id": "n2", "title": "Utbildning i mätteknik för nya operatörer", "companyId": "c2", "category": "Kompetensutveckling", "source": "Privat meddelande", "status": "new", "createdAt": "2026-10-22T11:01:00Z" },
+    { "id": "n3", "title": "Rekrytering av operatörer", "companyId": "c3", "category": "Attrahera framtida medarbetare", "source": "Privat meddelande", "status": "new", "createdAt": "2026-10-21T09:31:00Z" },
+    { "id": "n4", "title": "Förstudie om cobotar för bockning", "companyId": "c2", "category": "Automation", "source": "Community", "status": "new", "createdAt": "2026-10-18T09:05:00Z" }
+  ],
+
+  "roles": [
+    { "id": "r1", "name": "Administratör", "description": "Allt, inklusive användare och roller" },
+    { "id": "r2", "name": "Redaktör", "description": "Skapa, redigera och publicera nyheter, event och landningssidor" },
+    { "id": "r3", "name": "Moderator", "description": "Granska, avpublicera och ta bort community-inlägg och kommentarer" },
+    { "id": "r4", "name": "Handläggare", "description": "Läsa och besvara privata meddelanden" }
+  ],
+
+  "integrations": [
+    { "id": "i1", "name": "Ungapped (event)", "description": "API-koppling utreds. Anmälningslänk används under tiden.", "status": "investigating" },
+    { "id": "i2", "name": "IUC VS (verksamhetssystem)", "description": "Företag och kontaktpersoner. Manuell inmatning tills vidare.", "status": "investigating" },
+    { "id": "i3", "name": "E-postutskick", "description": "Bekräftelse, godkännande, svar och notiser.", "status": "to_configure" }
+  ]
+}
