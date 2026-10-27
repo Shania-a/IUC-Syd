@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = {
   /**
@@ -16,5 +16,13 @@ module.exports = {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap(/*{ strapi }*/) {},
+  bootstrap({ strapi }) {
+    // Körs precis innan en ny användare sparas i databasen
+    strapi.db.lifecycles.subscribe({
+      models: ["plugin::users-permissions.user"],
+      beforeCreate(event) {
+        event.params.data.blocked = true;
+      },
+    });
+  },
 };
