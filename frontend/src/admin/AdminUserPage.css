@@ -1,0 +1,470 @@
+/* Typsnitt från Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap");
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --color-primary: #164e63;
+  --color-primary-light: #e6f1f4;
+  --color-background: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-text: #202b38;
+  --color-muted: #718096;
+  --color-border: #e2e8f0;
+  --radius: 12px;
+
+  /* IUC Syds färger */
+  --petrol-900: #09423b;
+  --petrol-700: #2b5c58;
+  --teal-600: #096d61;
+  --teal-700: #075a50;
+  --amber: #f0b44c;
+
+  --bg: #f5f4ef;
+  --surface: #ffffff;
+  --surface-soft: #f2f1ec;
+  --line: #e4e2da;
+  --ink: #15211f;
+  --muted: #5f6b68;
+
+  --ok-bg: #dcefe7;
+  --ok-fg: #0a6157;
+  --new-bg: #e4f1ec;
+  --new-fg: #0a5e54;
+  --warn-bg: #fbeed0;
+  --warn-fg: #7d5200;
+  --danger-bg: #fbe3dd;
+  --danger-fg: #a33a27;
+
+  --font-body:
+    "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk", "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+
+  --radius-lg: 14px;
+  --radius-md: 8px;
+  --radius-sm: 4px;
+  --sidebar-w: 248px;
+
+  color: var(--ink);
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: var(--bg);
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal-600);
+  outline-offset: 2px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+/* Grundlayout */
+.admin-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: 100vh;
+}
+
+.admin-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  padding: 24px 28px 48px;
+}
+
+/* Sidomeny */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 18px 14px;
+  background: var(--petrol-900);
+  color: #fff;
+  overflow-y: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px;
+}
+
+.brand strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.brand small {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: #fff;
+  color: var(--petrol-900);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.brand-mark.small {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--petrol-900);
+  color: #fff;
+  font-size: 0.7rem;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.nav-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 10px;
+  border-radius: var(--radius-md);
+  color: rgb(255 255 255 / 0.88);
+  font-weight: 500;
+  font-size: 0.92rem;
+}
+
+.nav-link:hover {
+  background: rgb(255 255 255 / 0.07);
+}
+
+.nav-link.active {
+  background: var(--petrol-700);
+  color: #fff;
+}
+
+.nav-count {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--amber);
+  color: var(--petrol-900);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.nav-group {
+  margin: 22px 10px 6px;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.sidebar-foot {
+  margin-top: auto;
+  display: grid;
+  gap: 8px;
+}
+
+.foot-link {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.foot-link:hover {
+  background: rgb(255 255 255 / 0.07);
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar-title h1 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.topbar-title p {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.search {
+  position: relative;
+  width: min(300px, 100%);
+}
+
+.search input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+  font-size: 0.88rem;
+}
+
+.admin-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Panel */
+.panel {
+  padding: 20px 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 16px;
+  margin-bottom: 14px;
+}
+
+.panel-head h2 {
+  margin-right: auto;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.panel-aside {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* Flikar */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 14px;
+  padding: 4px;
+  width: fit-content;
+  background: var(--surface-soft);
+  border-radius: var(--radius-md);
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.tab.active {
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgb(9 66 59 / 0.12);
+}
+
+.tab-count {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* Tabell */
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.table th {
+  padding: 0 10px 8px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.table td {
+  padding: 12px 10px 12px 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.align-end {
+  text-align: right;
+}
+
+/* Avatar och Person */
+.person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.person strong,
+.person .muted {
+  display: block;
+}
+
+.person .muted {
+  font-size: 0.8rem;
+}
+
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--new-bg);
+  color: var(--petrol-900);
+  font-size: 0.72rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* Knappar */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 8px 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--teal-600);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--teal-700);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+.btn.btn-secondary {
+  --bs-btn-color: var(--ink);
+  --bs-btn-bg: var(--surface);
+  --bs-btn-border-color: var(--line);
+  --bs-btn-hover-color: var(--ink);
+  --bs-btn-hover-bg: var(--surface);
+  --bs-btn-hover-border-color: var(--teal-600);
+}
