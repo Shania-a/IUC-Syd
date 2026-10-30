@@ -14,6 +14,9 @@ import Start_sida from "./stardSidan/Stard_sidan";
 // Sidor för admin
 import AdminStartPage from "./admin/AdminStartPage";
 import AdminUserPage from "./admin/AdminUserPAge";
+import AdminCompanyPage from "./admin/AdminCompanyPage";
+import AdminMessagesPage from "./admin/AdminMessagesPage";
+import AdminModerationPage from "./admin/AdminModerationPage";
 
 function App() {
   return (
@@ -25,8 +28,13 @@ function App() {
         <Route path="/" element={<Log_in />} />
         <Route path="/sign_up" element={<Sign_up />} />
         <Route path="/Start_sida" element={<Start_sida />} />
+
+        {/* admin path */}
         <Route path="/admin" element={<AdminStartPage />} />
         <Route path="/AdminUserPage" element={<AdminUserPage />} />
+        <Route path="/AdminCompanyPage" element={<AdminCompanyPage />} />
+        <Route path="/AdminMessagesPage" element={<AdminMessagesPage />} />
+        <Route path="/AdminModerationPage" element={<AdminModerationPage />} />
 
         {/* path="*" betyder "alla andra adresser" */}
         <Route path="*" element={<h1>404 – Sidan hittades inte</h1>} />

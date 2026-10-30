@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./AdminStartPage.css"; // samma CSS-fil som AdminStartPage
-
+import "./css/AdminUserPage.css";
 const AdminUserPage = () => {
   return (
     <div className="admin-layout">
@@ -20,10 +19,18 @@ const AdminUserPage = () => {
             <Link to="/AdminUserPage">
               <li>Användare</li>
             </Link>
-            <li>Företag</li>
-            <li>Avtal</li>
-            <li>Moderering</li>
-            <li>Privata meddelanden</li>
+
+            <Link to="/AdminCompanyPage">
+              <li>Företag</li>
+            </Link>
+
+            <Link to="/AdminModerationPage">
+              <li>Moderering</li>
+            </Link>
+
+            <Link to="/AdminMessagesPage">
+              <li>Privata medelande</li>
+            </Link>
           </ul>
         </nav>
       </aside>
