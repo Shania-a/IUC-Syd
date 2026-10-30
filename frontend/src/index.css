@@ -763,7 +763,21 @@ textarea,
   background: var(--surface);
   border-color: var(--line);
 }
-
+/* Bootstrap ger .btn-secondary vit text och grå hover. Skriv över Bootstraps variabler. */
+.btn.btn-secondary {
+  --bs-btn-color: var(--ink);
+  --bs-btn-bg: var(--surface);
+  --bs-btn-border-color: var(--line);
+  --bs-btn-hover-color: var(--ink);
+  --bs-btn-hover-bg: var(--surface);
+  --bs-btn-hover-border-color: var(--teal-600);
+  --bs-btn-active-color: var(--ink);
+  --bs-btn-active-bg: var(--surface-soft);
+  --bs-btn-active-border-color: var(--teal-600);
+  --bs-btn-disabled-color: var(--ink);
+  --bs-btn-disabled-bg: var(--surface);
+  --bs-btn-disabled-border-color: var(--line);
+}
 .btn-secondary:not(:disabled):hover {
   border-color: var(--teal-600);
 }
