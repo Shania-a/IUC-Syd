@@ -1,42 +1,42 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import "./App.css";
 
-// Medlemsportalen (från log_in)
+// Medlemsportalen
 import Headers from "./Global_function/Headers";
 import Footer from "./Global_function/Footer";
 import Log_in from "./Sign_in/Log_in";
 import Sign_up from "./register/Sign_up";
 import Start_sida from "./stardSidan/Stard_sidan";
 
-// Admin (från admin-page)
+// Admin
 import AdminLayout from "./layouts/AdminLayout";
 import { AdminDataProvider } from "./context/AdminDataContext";
 import { adminSections } from "./adminRoutes";
 import { ADMIN_BASE } from "./adminPaths";
 
-// Header + footer runt alla vanliga sidor
+// Header och footer runt medlemssidorna
 function PublicLayout() {
   return (
-    <div className="public-layout">
+    <>
       <Headers />
       <Outlet />
       <Footer />
-    </div>
+    </>
   );
 }
 
-function App() {
+export default function App() {
   return (
     <Routes>
-      {/* Vanliga sidor */}
+      {/* Medlemssidor */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Log_in />} />
         <Route path="/sign_up" element={<Sign_up />} />
         <Route path="/Start_sida" element={<Start_sida />} />
-        <Route path="" element={<h1>404 – Sidan hittades inte</h1>} />
+        <Route path="*" element={<h1>404 – Sidan hittades inte</h1>} />
       </Route>
 
-      {/* Admin – egen layout med sidomeny */}
+      {/* Admin */}
       <Route
         path={ADMIN_BASE}
         element={
@@ -52,10 +52,8 @@ function App() {
             <Route key={section.path} path={section.path} element={section.element} />
           )
         )}
-        <Route path="" element={<Navigate to={ADMIN_BASE} replace />} />
+        <Route path="*" element={<Navigate to={ADMIN_BASE} replace />} />
       </Route>
     </Routes>
   );
 }
-
-export default App;

@@ -9,6 +9,7 @@ import Sidebar from '../components/Sidebar';
 import { adminSections } from '../adminRoutes';
 import { sectionUrl } from '../adminPaths';
 import { useAdmin } from '../context/AdminDataContext';
+import '../styles/admin.css'; // all CSS för admin-sidan
 
 export default function AdminLayout() {
   const { loading, error, toast } = useAdmin();
@@ -46,10 +47,10 @@ export default function AdminLayout() {
         </main>
       </div>
 
-      {/* Bekräftelserutan längst ner, t.ex. "Kontot är godkänt" */}
+      {/* Bekräftelse längst ner. Heter admin-toast eftersom Bootstrap gömmer "toast". */}
       {toast && (
-        <div className="toast-region">
-          <div className="toast">{toast}</div>
+        <div className="admin-toast-region">
+          <div className="admin-toast">{toast}</div>
         </div>
       )}
     </div>
