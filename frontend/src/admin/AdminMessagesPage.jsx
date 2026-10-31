@@ -39,7 +39,7 @@ const AdminMessagesPage = () => {
       {/* Huvudinnehåll */}
       <main className="admin-main-content">
         <header className="admin-topbar">
-          <h1>Företag</h1>
+          <h1>Privata medelande</h1>
           <div className="topbar-search">
             <input
               type="text"

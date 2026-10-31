@@ -13,7 +13,7 @@ import Start_sida from "./stardSidan/Stard_sidan";
 
 // Sidor för admin
 import AdminStartPage from "./admin/AdminStartPage";
-import AdminUserPage from "./admin/AdminUserPAge";
+import AdminUserPage from "./admin/AdminUserPage";
 import AdminCompanyPage from "./admin/AdminCompanyPage";
 import AdminMessagesPage from "./admin/AdminMessagesPage";
 import AdminModerationPage from "./admin/AdminModerationPage";

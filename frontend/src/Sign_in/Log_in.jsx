@@ -18,10 +18,14 @@ function Log_in() {
   // Frågar Strapi "vem är jag?". Webbläsaren skickar cookien automatiskt
   async function checkUser() {
     try {
-      const res = await fetch("http://localhost:1337/api/users/me", {
-        // NYTT: gör att webbläsaren skickar med cookien (ersätter Authorization-headern)
-        credentials: "include",
-      });
+      // ÄNDRAT: ?populate=role gör att rollen (t.ex. Admin) följer med i svaret
+      const res = await fetch(
+        "http://localhost:1337/api/users/me?populate=role",
+        {
+          // NYTT: gör att webbläsaren skickar med cookien (ersätter Authorization-headern)
+          credentials: "include",
+        },
+      );
 
       if (res.ok) {
         setUser(await res.json());
@@ -57,7 +61,15 @@ function Log_in() {
       const data = await res.json();
 
       if (data.error) {
-        setError(data.error.message);
+        // Strapi svarar "Your account has been blocked by the administrator"
+        // för konton som ännu inte är godkända
+        if (data.error.message.toLowerCase().includes("blocked")) {
+          setError(
+            "Ditt konto väntar på godkännande från IUC Syd. Du kan logga in när en administratör har godkänt det.",
+          );
+        } else {
+          setError(data.error.message);
+        }
         return;
       }
 
@@ -90,9 +102,10 @@ function Log_in() {
     );
   }
 
-  // ÄNDRAT: villkoret är nu bara "user" i stället för "token && user"
+  // ÄNDRAT: admin skickas till /admin, alla andra till /Start_sida
   if (user) {
-    return <Navigate to="/Start_sida" replace />;
+    const isAdmin = user.role?.name === "admin";
+    return <Navigate to={isAdmin ? "/admin" : "/Start_sida"} replace />;
   }
 
   // Utloggad: visa formuläret (oförändrat)

@@ -39,7 +39,7 @@ const AdminModerationPage = () => {
       {/* Huvudinnehåll */}
       <main className="admin-main-content">
         <header className="admin-topbar">
-          <h1>Företag</h1>
+          <h1>Moderering</h1>
           <div className="topbar-search">
             <input
               type="text"

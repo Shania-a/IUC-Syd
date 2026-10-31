@@ -468,3 +468,9 @@ p {
   --bs-btn-hover-bg: var(--surface);
   --bs-btn-hover-border-color: var(--teal-600);
 }
+
+.sidebar-nav a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
