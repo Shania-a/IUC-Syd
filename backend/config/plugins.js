@@ -29,7 +29,7 @@ module.exports = () => ({
         httpOnly: true,
       },
       register: {
-        allowedFields: ["company_id"],
+        allowedFields: ["company_id", "company"],
       },
     },
   },

@@ -1,8 +1,95 @@
-import React from "react";
-import "./css/AdminStartPage.css"; // samma CSS-fil som AdminStartPage
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import "./css/AdminStartPage.css";
+import { Link, useNavigate } from "react-router-dom";
+
+const API_URL = "http://localhost:1337";
 
 const AdminStartPage = () => {
+  const [checking, setChecking] = useState(true);
+  const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
+
+  // Logga ut-funktion
+  const handleLogout = async () => {
+    try {
+      await fetch(`${API_URL}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (err) {
+      console.error("Kunde inte logga ut:", err);
+    } finally {
+      navigate("/", { replace: true });
+    }
+  };
+
+  // Hämta användare från Strapi
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/users`, {
+        credentials: "include",
+      });
+      if (!response.ok) throw new Error("Kunde inte hämta användare");
+      const data = await response.json();
+      setUsers(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Kolla om inloggad användare är Admin när sidan laddas
+  useEffect(() => {
+    fetch(`${API_URL}/api/users/me?populate=role`, { credentials: "include" })
+      .then((res) => {
+        if (!res.ok) {
+          navigate("/", { replace: true });
+          return null;
+        }
+        return res.json();
+      })
+      .then((meData) => {
+        if (!meData) return;
+
+        const roleName =
+          meData?.role?.name?.toLowerCase() || meData?.role?.toLowerCase();
+
+        if (roleName !== "admin" && roleName !== "administratör") {
+          navigate("/", { replace: true });
+          return;
+        }
+
+        setChecking(false);
+        fetchUsers();
+      })
+      .catch(() => navigate("/", { replace: true }));
+  }, [navigate]);
+
+  // Funktion för att godkänna eller blockera en användare
+  const setBlocked = async (userId, blocked) => {
+    try {
+      const response = await fetch(`${API_URL}/api/users/${userId}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ blocked }),
+      });
+      if (!response.ok) throw new Error("Kunde inte uppdatera användaren");
+
+      setUsers((prev) =>
+        prev.map((user) => (user.id === userId ? { ...user, blocked } : user)),
+      );
+    } catch (err) {
+      alert("Fel: " + err.message);
+    }
+  };
+
+  // Filtrera fram användare som väntar på godkännande (blocked = true)
+  const pendingUsers = users.filter((user) => user.blocked === true);
+
+  if (checking) {
+    return <p style={{ padding: "2rem" }}>Laddar...</p>;
+  }
+
   return (
     <div className="admin-layout">
       {/* Mörkgrön sidomeny */}
@@ -14,24 +101,25 @@ const AdminStartPage = () => {
         <nav className="sidebar-nav">
           <ul>
             <Link to="/Admin">
-              <li>Översikt</li>
+              <li className="active">Översikt</li>
             </Link>
-
             <Link to="/AdminUserPage">
               <li>Användare</li>
             </Link>
-
             <Link to="/AdminCompanyPage">
               <li>Företag</li>
             </Link>
-
             <Link to="/AdminModerationPage">
               <li>Moderering</li>
             </Link>
-
             <Link to="/AdminMessagesPage">
-              <li>Privata medelande</li>
+              <li>Privata meddelande</li>
             </Link>
+            <li>
+              <button className="sidebar-logout" onClick={handleLogout}>
+                Logga ut
+              </button>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -56,7 +144,7 @@ const AdminStartPage = () => {
           <section className="stats-grid">
             <div className="stat-card">
               <span className="stat-label">Användare att godkänna</span>
-              <span className="stat-number">2</span>
+              <span className="stat-number">{pendingUsers.length}</span>
             </div>
             <div className="stat-card">
               <span className="stat-label">Väntande företag</span>
@@ -76,7 +164,7 @@ const AdminStartPage = () => {
           <div className="dashboard-grid">
             {/* Vänster kolumn */}
             <div className="dashboard-column">
-              {/* Användare att godkänna */}
+              {/* Användare att godkänna (kopplad till Strapi!) */}
               <div className="admin-card">
                 <div className="card-header">
                   <h3>Användare att godkänna</h3>
@@ -85,32 +173,36 @@ const AdminStartPage = () => {
                   </span>
                 </div>
                 <ul className="item-list">
-                  <li className="list-item">
-                    <div className="item-info">
-                      <strong>Sara Holm</strong>
-                      <span>Högskolan Väst</span>
-                    </div>
-                    <div className="item-meta">
-                      <span>2 dagar sedan</span>
-                    </div>
-                    <div className="item-actions">
-                      <button className="btn-success">Godkänn</button>
-                      <button className="btn-outline">Neka</button>
-                    </div>
-                  </li>
-                  <li className="list-item">
-                    <div className="item-info">
-                      <strong>Karin Dahl</strong>
-                      <span>Nordisk Mekanik AB</span>
-                    </div>
-                    <div className="item-meta">
-                      <span>3 dagar sedan</span>
-                    </div>
-                    <div className="item-actions">
-                      <button className="btn-success">Godkänn</button>
-                      <button className="btn-outline">Neka</button>
-                    </div>
-                  </li>
+                  {pendingUsers.length > 0 ? (
+                    pendingUsers.map((user) => (
+                      <li key={user.id} className="list-item">
+                        <div className="item-info">
+                          <p>Namn: </p>
+                          <strong>{user.username}</strong>
+                        </div>
+                        <div>
+                          <p>Företag: </p>
+                          <span>{user.company_id || "Inget företag"}</span>
+                        </div>
+                        <div className="item-meta">
+                          <p>Email:</p>
+                          <span>{user.email}</span>
+                        </div>
+                        <div className="item-actions">
+                          <button
+                            className="btn-success"
+                            onClick={() => setBlocked(user.id, false)}
+                          >
+                            Godkänn
+                          </button>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <p style={{ padding: "10px", color: "#666" }}>
+                      Inga användare väntar på godkännande.
+                    </p>
+                  )}
                 </ul>
               </div>
 
@@ -144,7 +236,9 @@ const AdminStartPage = () => {
               <div className="admin-card">
                 <div className="card-header">
                   <h3>Företag och huvudkontakt</h3>
-                  <button className="btn-small">Nytt företag</button>
+                  <Link to="/AdminCompanyPage" className="btn-small">
+                    Hantera företag
+                  </Link>
                 </div>
                 <table className="admin-table">
                   <thead>
@@ -163,17 +257,9 @@ const AdminStartPage = () => {
                         <span className="status-dot green"></span> 2 st godkända
                       </td>
                       <td>
-                        <button className="btn-text">Redigera</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Nordisk Mekanik AB</td>
-                      <td>Erik Sandberg</td>
-                      <td>
-                        <span className="status-dot green"></span> 3 st godkända
-                      </td>
-                      <td>
-                        <button className="btn-text">Redigera</button>
+                        <Link to="/AdminCompanyPage" className="btn-text">
+                          Redigera
+                        </Link>
                       </td>
                     </tr>
                   </tbody>
@@ -194,13 +280,6 @@ const AdminStartPage = () => {
                     <div>
                       <strong>Vd och huvudkontakt</strong>
                       <p>Jonas Håkansson - Syntec Componenter AB / Inlägg</p>
-                    </div>
-                    <button className="btn-secondary">Öppna</button>
-                  </li>
-                  <li className="list-item">
-                    <div>
-                      <strong>Fråga om bild för kompetensutveckling</strong>
-                      <p>Erik Sandberg - Nordisk Mekanik AB / Inlägg</p>
                     </div>
                     <button className="btn-secondary">Öppna</button>
                   </li>

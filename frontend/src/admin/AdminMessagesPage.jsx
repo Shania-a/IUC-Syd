@@ -1,8 +1,23 @@
 import React from "react";
 import "./css/AdminMessagesPage.css"; // samma CSS-fil som AdminStartPage
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminMessagesPage = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await fetch(`${API_URL}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (err) {
+      console.error("Kunde inte logga ut:", err);
+    } finally {
+      navigate("/", { replace: true });
+    }
+  };
+
   return (
     <div className="admin-layout">
       {/* Mörkgrön sidomeny */}
@@ -32,6 +47,11 @@ const AdminMessagesPage = () => {
             <Link to="/AdminMessagesPage">
               <li>Privata medelande</li>
             </Link>
+            <li>
+              <button className="sidebar-logout" onClick={handleLogout}>
+                Logga ut
+              </button>
+            </li>
           </ul>
         </nav>
       </aside>
