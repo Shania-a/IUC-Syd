@@ -9,7 +9,7 @@
 
 .admin-sidebar {
   width: 260px;
-  background-color: #0c3b2e;
+  background-color: #036e78;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -46,9 +46,9 @@
 
 .sidebar-nav li:hover,
 .sidebar-nav li.active {
-  background-color: #145341;
+  background-color: #144653;
   color: #fff;
-  border-left: 4px solid #4ade80;
+  border-left: 4px solid #4a8fde;
 }
 
 .admin-main-content {

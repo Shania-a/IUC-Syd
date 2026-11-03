@@ -44,11 +44,10 @@ const AdminUserPage = () => {
         const meData = await me.json();
 
         // Plockar ut rollnamnet i gemener, så "Admin" och "admin" blir samma
-        const roleName =
-          meData?.role?.name?.toLowerCase() || meData?.role?.toLowerCase();
+        const roleName = meData?.role?.name?.toLowerCase();
 
         // Om rollen varken är "admin" eller "administratör" får man inte vara här
-        if (roleName !== "admin" && roleName !== "administratör") {
+        if (roleName !== "admin") {
           // Skriver en varning i konsolen med vilken roll användaren hade
           console.warn("Åtkomst nekad. Rollen är inte admin:", roleName);
           // Skicka till inloggningssidan
@@ -93,30 +92,42 @@ const AdminUserPage = () => {
     // Lista över saker som får effekten att köras om (här bara navigate)
   }, [navigate]);
 
-  // Ändrar blocked på en användare i Strapi (true = blockerad, false = godkänd)
   const setBlocked = async (userId, blocked) => {
     try {
-      // Skickar en PUT till Strapi med användarens id i adressen
       const response = await fetch(`${API_URL}/api/users/${userId}`, {
-        // PUT = uppdatera befintlig post
         method: "PUT",
-        // Skickar med inloggningscookien
         credentials: "include",
-        // Talar om att vi skickar JSON
         headers: { "Content-Type": "application/json" },
-        // Själva ändringen, t.ex. { "blocked": false }
         body: JSON.stringify({ blocked }),
       });
-      // Om Strapi nekar eller något går fel, kasta ett fel
       if (!response.ok) throw new Error("Kunde inte uppdatera användaren");
 
-      // Uppdaterar listan på skärmen utan att hämta allt igen
       setUsers((prev) =>
-        // Går igenom alla användare: byter blocked på den som ändrades
         prev.map((user) => (user.id === userId ? { ...user, blocked } : user)),
       );
     } catch (err) {
-      // Visar felet på sidan
+      alert("Fel: " + err.message);
+    }
+  };
+
+  //raderar användare från Strapi och uppdaterar listan på skärmen
+  const deleteUser = async (userId, username) => {
+    // Fråga om man verkligen vill radera
+    if (!window.confirm(`Är du säker på att du vill radera "${username}"?`))
+      return;
+
+    try {
+      // Skickar ett DELETE-anrop till Strapi med användarens ID
+      const response = await fetch(`${API_URL}/api/users/${userId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error("Kunde inte radera användaren");
+
+      // Ta bort användaren från listan på skärmen
+      setUsers((prev) => prev.filter((user) => user.id !== userId));
+    } catch (err) {
       setError(err.message);
     }
   };
@@ -171,11 +182,8 @@ const AdminUserPage = () => {
     }
   };
 
-  // Här börjar det som ritas på sidan (JSX)
   return (
-    // Yttersta rutan som håller ihop sidomeny och innehåll
     <div className="admin-layout">
-      {/* Den mörkgröna sidomenyn till vänster */}
       <aside className="admin-sidebar">
         {/* Logotyp och text överst i menyn */}
         <div className="sidebar-logo">
@@ -266,6 +274,7 @@ const AdminUserPage = () => {
                 {/* Antalet väntande visas i en liten ruta */}
                 Väntar <span className="badge">{pendingUsers.length}</span>
               </button>
+
               {/* Fliken Godkända, samma upplägg */}
               <button
                 className={
@@ -277,6 +286,7 @@ const AdminUserPage = () => {
               >
                 Godkända <span className="badge">{approvedUsers.length}</span>
               </button>
+
               {/* Fliken Alla, samma upplägg */}
               <button
                 className={
@@ -335,10 +345,14 @@ const AdminUserPage = () => {
                           ) : (
                             <button
                               className="btn-outline"
-                              // Blockera: sätter blocked till true
-                              onClick={() => setBlocked(user.id, true)}
+                              style={{
+                                color: "#d9534f",
+                                borderColor: "#d9534f",
+                              }}
+                              // tar bort användaren från Strapi och uppdaterar listan på skärmen
+                              onClick={() => deleteUser(user.id, user.username)}
                             >
-                              Blockera
+                              Radera användare
                             </button>
                           )}
                         </div>

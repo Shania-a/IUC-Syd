@@ -4,6 +4,8 @@ import "./css/AdminCompanyPage.css";
 
 const API_URL = "http://localhost:1337";
 
+//lägg till fliteringsystem
+
 const AdminCompanyPage = () => {
   const [companies, setCompanies] = useState([]);
   const [users, setUsers] = useState([]);
@@ -57,17 +59,17 @@ const AdminCompanyPage = () => {
         if (!meData) return;
 
         // Hämta rollnamnet
-        const roleName =
-          meData?.role?.name?.toLowerCase() || meData?.role?.toLowerCase();
+        const roleName = meData?.role?.name?.toLowerCase();
 
         // Kolla om det är en admin
-        if (roleName !== "admin" && roleName !== "administratör") {
+        if (roleName !== "admin") {
           navigate("/", { replace: true });
           return;
         }
 
-        // Om det är en admin, släpp igenom
+        // Om det är en admin, släpp igenom och visa all data som är hänmtad
         setChecking(false);
+        fetchData();
       })
       .catch(() => navigate("/", { replace: true }));
   }, [navigate]);
@@ -154,7 +156,7 @@ const AdminCompanyPage = () => {
             </Link>
 
             <Link to="/AdminCompanyPage">
-              <li>Företag</li>
+              <li>Företag/Organisation</li>
             </Link>
 
             <Link to="/AdminModerationPage">
@@ -176,11 +178,11 @@ const AdminCompanyPage = () => {
       {/* Huvudinnehåll med dina ursprungliga klasser */}
       <main className="admin-main-content">
         <header className="admin-topbar">
-          <h1>Företag</h1>
+          <h1>Företag/ORGANISATION</h1>
           <div className="topbar-search">
             <input
               type="text"
-              placeholder="Sök företag, stad eller kontaktperson..."
+              placeholder="Sök företag, organisation stad eller kontaktperson..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -193,8 +195,8 @@ const AdminCompanyPage = () => {
         <div className="admin-content-scroll">
           <div className="admin-card">
             <div className="card-header">
-              <h3>Företag och huvudkontakt</h3>
-              <button
+              <h3>Företag/ORGANISATION och huvudkontakt</h3>
+              <button //knapp för att skapa nytt företag
                 className="btn-small"
                 onClick={() => {
                   setEditingCompany(null);
@@ -207,14 +209,14 @@ const AdminCompanyPage = () => {
                   setIsModalOpen(true);
                 }}
               >
-                Nytt företag
+                Nytt företag/ORGANISATION
               </button>
             </div>
 
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th>FÖRETAG</th>
+                  <th>FÖRETAG/ORGANISATION</th>
                   <th>HUVUDKONTAKT</th>
                   <th>ANVÄNDARE</th>
                   <th>ÅTGÄRD</th>

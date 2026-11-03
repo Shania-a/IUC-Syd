@@ -142,10 +142,13 @@ const AdminStartPage = () => {
         <div className="admin-content-scroll">
           {/* Siffror / Översikts-kort */}
           <section className="stats-grid">
-            <div className="stat-card">
-              <span className="stat-label">Användare att godkänna</span>
-              <span className="stat-number">{pendingUsers.length}</span>
-            </div>
+            <Link to="/AdminUserPage">
+              <div className="stat-card">
+                <span className="stat-label">Användare att godkänna</span>
+                <span className="stat-number">{pendingUsers.length}</span>
+              </div>
+            </Link>
+
             <div className="stat-card">
               <span className="stat-label">Väntande företag</span>
               <span className="stat-number">2</span>
