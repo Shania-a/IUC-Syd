@@ -293,3 +293,48 @@ button {
   font-size: 1rem;
 }
 
+.btn-small {
+  display: inline-block;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid #036e78;
+  border-radius: 4px;
+  color: #036e78;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-small:hover {
+  background-color: #036e78;
+  color: #fff;
+}
+
+/* Footern har Bootstraps mt-5. På adminsidorna ska sidomenyn gå ända ner till footern.
+   !important behövs eftersom Bootstraps mt-5 själv använder !important */
+.admin-layout + .footer {
+  margin-top: 0 !important;
+}
+
+/* privata meddelandenfyller hela kolumnens höjd */
+.dashboard-column > .admin-card:only-child {
+  flex: 1;
+}
+
+/* Öppna-knapparna i Privata meddelanden, samma stil som Hantera företag */
+.item-list.compact .btn-secondary {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid #036e78;
+  border-radius: 4px;
+  color: #036e78;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.item-list.compact .btn-secondary:hover {
+  background-color: #036e78;
+  color: #fff;
+}

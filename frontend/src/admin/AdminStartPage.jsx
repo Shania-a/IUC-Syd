@@ -269,7 +269,7 @@ const AdminStartPage = () => {
               </div>
             </div>
 
-            {/* Höger kolumn */}
+                        {/* Höger kolumn */}
             <div className="dashboard-column">
               {/* Privata meddelanden */}
               <div className="admin-card">
@@ -285,49 +285,15 @@ const AdminStartPage = () => {
                     </div>
                     <button className="btn-secondary">Öppna</button>
                   </li>
+                  <li className="list-item">
+                    <div>
+                      <strong>Anmälan till event</strong>
+                      <p>Mikael Berg - Skåne Plast AB / Event</p>
+                    </div>
+                    <button className="btn-secondary">Öppna</button>
+                  </li>
                 </ul>
-              </div>
-
-              {/* Roller och behörighet */}
-              <div className="admin-card">
-                <div className="card-header">
-                  <h3>Roller och behörighet</h3>
-                  <span className="card-sub">Vem får göra vad hos IUC Syd</span>
-                </div>
-                <table className="admin-table roles-table">
-                  <thead>
-                    <tr>
-                      <th>Roll</th>
-                      <th>Beskrivning</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <strong>Admin</strong>
-                      </td>
-                      <td>Full tillgång till alla användare och roller.</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Redaktör</strong>
-                      </td>
-                      <td>
-                        Skapa, redigera och publicera nyheter, event och
-                        landningssidor.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Moderator</strong>
-                      </td>
-                      <td>
-                        Granska, publicera och ta bort community-inlägg och
-                        kommentarer.
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                
               </div>
             </div>
           </div>
