@@ -172,6 +172,12 @@
   display: flex;
   gap: 8px;
 }
+.mod-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 16px;
+  margin-top: 12px;
+}
 
 button {
   padding: 6px 12px;
@@ -257,3 +263,33 @@ button {
   display: inline-block;
   margin-right: 6px;
 }
+
+/* Menyn fyller hela sidomenyns höjd så att Logga ut kan ligga längst ner */
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-nav ul {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sista punkten i menyn är Logga ut. sticky håller den synlig,
+   annars skjuter sidhuvudet ner den halvvägs under skärmkanten */
+.sidebar-nav ul > li:last-child {
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  padding: 20px;
+  background-color: #036e78;
+  border-left: none;
+}
+
+.sidebar-logout {
+  padding: 10px 24px;
+  font-size: 1rem;
+}
+

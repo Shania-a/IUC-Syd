@@ -227,11 +227,10 @@ const AdminStartPage = () => {
                     Vi bytte leverantör och är väldigt nöjda. Kontakta oss så
                     berättar vi vilken..."
                   </p>
-                  <div className="item-actions">
+                <div className="mod-actions">
                     <button className="btn-primary">Godkänn</button>
-                    <button className="btn-outline">Återställa</button>
                     <button className="btn-danger">Ta bort</button>
-                  </div>
+                </div>
                 </div>
               </div>
 

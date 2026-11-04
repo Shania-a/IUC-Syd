@@ -332,24 +332,27 @@ const AdminUserPage = () => {
                       <td>{formatDate(user.createdAt)}</td>
                       {/* Kolumn 4: knappar */}
                       <td>
-                        <div className="item-actions">
-                          {/* Är användaren blockerad visas Godkänn, annars Blockera */}
+                        <div className="item-actions user-actions">
                           {user.blocked ? (
-                            <button
-                              className="btn-success"
-                              // Godkänn: sätter blocked till false
-                              onClick={() => setBlocked(user.id, false)}
-                            >
-                              Godkänn
-                            </button>
+                            <>
+                              <button
+                                className="btn-success"
+                                onClick={() => setBlocked(user.id, false)}
+                              >
+                                Godkänn
+                              </button>
+                              <button
+                                className="btn-danger"
+                                // Nekade konton raderas direkt: vi sparar inga uppgifter om någon som aldrig blev medlem (GDPR)
+                                onClick={() => deleteUser(user.id, user.username)}
+                              >
+                                Neka
+                              </button>
+                            </>
                           ) : (
                             <button
                               className="btn-outline"
-                              style={{
-                                color: "#d9534f",
-                                borderColor: "#d9534f",
-                              }}
-                              // tar bort användaren från Strapi och uppdaterar listan på skärmen
+                              style={{ color: "#d9534f", borderColor: "#d9534f" }}
                               onClick={() => deleteUser(user.id, user.username)}
                             >
                               Radera användare
