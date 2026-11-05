@@ -8,6 +8,8 @@ const AdminStartPage = () => {
   const [checking, setChecking] = useState(true);
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+  const [companies, setCompanies] = useState([]);
+  const [companyCount, setCompanyCount] = useState(0);
 
   // Logga ut-funktion
   const handleLogout = async () => {
@@ -37,6 +39,20 @@ const AdminStartPage = () => {
     }
   };
 
+  //Hämtar alla företag Från strapi
+  const fetchCompany = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/companies`, {
+        credentials: "include",
+      });
+      if (!response.ok) throw new Error("Kunde inte hämta företag");
+      const data = await response.json();
+      setCompanies(data.data || []);
+      setCompanyCount(data.meta?.pagination?.total ?? 0);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   // Kolla om inloggad användare är Admin när sidan laddas
   useEffect(() => {
     fetch(`${API_URL}/api/users/me?populate=role`, { credentials: "include" })
@@ -60,6 +76,7 @@ const AdminStartPage = () => {
 
         setChecking(false);
         fetchUsers();
+        fetchCompany();
       })
       .catch(() => navigate("/", { replace: true }));
   }, [navigate]);
@@ -148,11 +165,12 @@ const AdminStartPage = () => {
                 <span className="stat-number">{pendingUsers.length}</span>
               </div>
             </Link>
-
-            <div className="stat-card">
-              <span className="stat-label">Väntande företag</span>
-              <span className="stat-number">2</span>
-            </div>
+            <Link to="/AdminCompanyPage">
+              <div className="stat-card">
+                <span className="stat-label">Antal företag</span>
+                <span className="stat-number">{companyCount}</span>
+              </div>
+            </Link>
             <div className="stat-card">
               <span className="stat-label">Obesvarade privata meddelanden</span>
               <span className="stat-number">3</span>
@@ -227,14 +245,15 @@ const AdminStartPage = () => {
                     Vi bytte leverantör och är väldigt nöjda. Kontakta oss så
                     berättar vi vilken..."
                   </p>
-                <div className="mod-actions">
+                  <div className="mod-actions">
                     <button className="btn-primary">Godkänn</button>
                     <button className="btn-danger">Ta bort</button>
-                </div>
+                  </div>
                 </div>
               </div>
 
               {/* Företag och huvudkontakt */}
+              {/********fixa så att man skrollar i rutan och att rutan inte blir större*********/}
               <div className="admin-card">
                 <div className="card-header">
                   <h3>Företag och huvudkontakt</h3>
@@ -245,31 +264,50 @@ const AdminStartPage = () => {
                 <table className="admin-table">
                   <thead>
                     <tr>
-                      <th>Företag</th>
-                      <th>Huvudkontakt</th>
-                      <th>Status</th>
-                      <th></th>
+                      <th>FÖRETAG/ORGANISATION</th>
+                      <th>HUVUDKONTAKT</th>
+
+                      <th>ÅTGÄRD</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Högskolan Verkstad AB</td>
-                      <td>Anna Lindqvist</td>
-                      <td>
-                        <span className="status-dot green"></span> 2 st godkända
-                      </td>
-                      <td>
-                        <Link to="/AdminCompanyPage" className="btn-text">
-                          Redigera
-                        </Link>
-                      </td>
-                    </tr>
+                    {companies.map((comp) => {
+                      const compId = comp.documentId || comp.id;
+                      return (
+                        <tr key={compId}>
+                          <td>
+                            <strong>{comp.name}</strong>
+                            <br />
+                            <span className="card-sub">{comp.city}</span>
+                          </td>
+                          <td>
+                            {comp.contactName}
+                            <br />
+                            <span className="card-sub">
+                              {comp.contactEmail}
+                            </span>
+                          </td>
+
+                          <td>
+                            <Link to="/AdminCompanyPage" className="btn-text">
+                              Hantera
+                            </Link>
+                          </td>
+                        </tr>
+                      );
+                    })}
+
+                    {companies.length === 0 && (
+                      <tr>
+                        <td colSpan="4">Inga företag hittades.</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
             </div>
 
-                        {/* Höger kolumn */}
+            {/* Höger kolumn */}
             <div className="dashboard-column">
               {/* Privata meddelanden */}
               <div className="admin-card">
@@ -293,7 +331,6 @@ const AdminStartPage = () => {
                     <button className="btn-secondary">Öppna</button>
                   </li>
                 </ul>
-                
               </div>
             </div>
           </div>
