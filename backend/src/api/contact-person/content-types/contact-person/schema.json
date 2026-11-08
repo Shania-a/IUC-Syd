@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contact_people",
+  "info": {
+    "singularName": "contact-person",
+    "pluralName": "contact-people",
+    "displayName": "Contact person"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "jobTitle": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string"
+    },
+    "approvalStatus": {
+      "type": "enumeration",
+      "required": true,
+      "default": "   pending",
+      "enum": [
+        "   pending",
+        "   approved",
+        "   rejected"
+      ]
+    },
+    "isMainContact": {
+      "type": "boolean",
+      "default": false
+    },
+    "companyConsent": {
+      "type": "boolean",
+      "default": false
+    },
+    "personConsent": {
+      "type": "boolean",
+      "default": false
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "contactPersons"
+    }
+  }
+}

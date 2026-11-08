@@ -25,6 +25,24 @@
     },
     "city": {
       "type": "string"
+    },
+    "contactPersons": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::contact-person.contact-person",
+      "mappedBy": "company"
+    },
+    "description": {
+      "type": "text"
+    },
+    "industry": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "phone": {
+      "type": "string"
     }
   }
 }

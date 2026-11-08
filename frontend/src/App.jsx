@@ -10,6 +10,7 @@ import Footer from "./Global_function/Footer";
 import Log_in from "./Sign_in/Log_in";
 import Sign_up from "./register/Sign_up";
 import Start_sida from "./stardSidan/Stard_sidan";
+import MittForetag from "./stardSidan/MittForetag";
 
 // Sidor för admin
 import AdminStartPage from "./admin/AdminStartPage";
@@ -28,6 +29,7 @@ function App() {
         <Route path="/" element={<Log_in />} />
         <Route path="/sign_up" element={<Sign_up />} />
         <Route path="/Start_sida" element={<Start_sida />} />
+        <Route path="/mitt_foretag" element={<MittForetag />} />
 
         {/* admin path */}
         <Route path="/admin" element={<AdminStartPage />} />
