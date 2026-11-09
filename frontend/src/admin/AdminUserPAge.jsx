@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./css/AdminUserPage.css";
 
 const API_URL = "http://localhost:1337";
@@ -164,218 +164,161 @@ const AdminUserPage = () => {
       month: "short",
     });
 
-  // Loggar ut användaren
-  const handleLogout = async () => {
-    try {
-      // Ber Strapi radera inloggningscookien
-      await fetch(`${API_URL}/api/auth/logout`, {
-        // POST = skicka en åtgärd till servern
-        method: "POST",
-        credentials: "include", // Skickar med cookien så servern vet vem som loggas ut
-      });
-    } catch (err) {
-      // Om anropet misslyckas skrivs felet i konsolen
-      console.error("Kunde inte logga ut ordentligt:", err);
-    } finally {
-      // Skicka alltid användaren till inloggningssidan oavsett om serveranropet lyckades helt
-      navigate("/", { replace: true });
-    }
-  };
-
   return (
-    <div className="admin-layout">
-      <aside className="admin-sidebar">
-        {/* Logotyp och text överst i menyn */}
-        <div className="sidebar-logo">
-          <h2>IUC Syd</h2>
-          <span>ADMINISTRATION</span>
+    <main className="admin-main-content">
+      {/* Toppfältet med rubrik, sök och användarinfo */}
+      <header className="admin-topbar">
+        {/* Sidans rubrik */}
+        <h1>Användare</h1>
+        {/* Sökrutan */}
+        <div className="topbar-search">
+          {/* value = texten kommer från state, onChange uppdaterar state vid varje tecken */}
+          <input
+            type="text"
+            placeholder="Sök användare, företag eller inlägg"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
-        {/* Navigeringen med alla menyval */}
-        <nav className="sidebar-nav">
-          <ul>
-            <Link to="/Admin">
-              <li>Översikt</li>
-            </Link>
+        {/* Text till höger som visar vem som är inloggad */}
+        <div className="topbar-user">
+          <span>IUC Syd – Administratör</span>
+        </div>
+      </header>
 
-            <Link to="/AdminUserPage">
-              <li>Användare</li>
-            </Link>
-
-            <Link to="/AdminCompanyPage">
-              <li>Företag</li>
-            </Link>
-
-            <Link to="/AdminModerationPage">
-              <li>Moderering</li>
-            </Link>
-
-            <Link to="/AdminMessagesPage">
-              <li>Privata medelande</li>
-            </Link>
-            <li>
-              <button className="sidebar-logout" onClick={handleLogout}>
-                Logga ut
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-
-      {/* Huvudytan till höger om menyn */}
-      <main className="admin-main-content">
-        {/* Toppfältet med rubrik, sök och användarinfo */}
-        <header className="admin-topbar">
-          {/* Sidans rubrik */}
-          <h1>Användare</h1>
-          {/* Sökrutan */}
-          <div className="topbar-search">
-            {/* value = texten kommer från state, onChange uppdaterar state vid varje tecken */}
-            <input
-              type="text"
-              placeholder="Sök användare, företag eller inlägg"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+      {/* Området med innehållet, som kan scrolla */}
+      <div className="admin-content-scroll">
+        {/* Det vita kortet som håller tabellen */}
+        <div className="admin-card">
+          {/* Kortets rubrikrad */}
+          <div className="card-header">
+            <h3>Alla användare</h3>
+            {/* Liten förklarande text till höger */}
+            <span className="card-sub">
+              Nya konton har ingen åtkomst förrän IUC Syd godkänner
+            </span>
           </div>
-          {/* Text till höger som visar vem som är inloggad */}
-          <div className="topbar-user">
-            <span>IUC Syd – Administratör</span>
-          </div>
-        </header>
 
-        {/* Området med innehållet, som kan scrolla */}
-        <div className="admin-content-scroll">
-          {/* Det vita kortet som håller tabellen */}
-          <div className="admin-card">
-            {/* Kortets rubrikrad */}
-            <div className="card-header">
-              <h3>Alla användare</h3>
-              {/* Liten förklarande text till höger */}
-              <span className="card-sub">
-                Nya konton har ingen åtkomst förrän IUC Syd godkänner
-              </span>
-            </div>
-
-            {/* Flikarna. style placerar knapparna bredvid varandra med mellanrum */}
-            <div
-              className="tabs"
-              style={{ display: "flex", gap: "8px", marginBottom: "20px" }}
+          {/* Flikarna. style placerar knapparna bredvid varandra med mellanrum */}
+          <div
+            className="tabs"
+            style={{ display: "flex", gap: "8px", marginBottom: "20px" }}
+          >
+            {/* Fliken Väntar. Är den vald får knappen klassen "active" */}
+            <button
+              className={
+                activeTab === "pending" ? "btn-secondary active" : "btn-outline"
+              }
+              // Vid klick byts vald flik till "pending"
+              onClick={() => setActiveTab("pending")}
             >
-              {/* Fliken Väntar. Är den vald får knappen klassen "active" */}
-              <button
-                className={
-                  activeTab === "pending"
-                    ? "btn-secondary active"
-                    : "btn-outline"
-                }
-                // Vid klick byts vald flik till "pending"
-                onClick={() => setActiveTab("pending")}
-              >
-                {/* Antalet väntande visas i en liten ruta */}
-                Väntar <span className="badge">{pendingUsers.length}</span>
-              </button>
+              {/* Antalet väntande visas i en liten ruta */}
+              Väntar <span className="badge">{pendingUsers.length}</span>
+            </button>
 
-              {/* Fliken Godkända, samma upplägg */}
-              <button
-                className={
-                  activeTab === "approved"
-                    ? "btn-secondary active"
-                    : "btn-outline"
-                }
-                onClick={() => setActiveTab("approved")}
-              >
-                Godkända <span className="badge">{approvedUsers.length}</span>
-              </button>
+            {/* Fliken Godkända, samma upplägg */}
+            <button
+              className={
+                activeTab === "approved"
+                  ? "btn-secondary active"
+                  : "btn-outline"
+              }
+              onClick={() => setActiveTab("approved")}
+            >
+              Godkända <span className="badge">{approvedUsers.length}</span>
+            </button>
 
-              {/* Fliken Alla, samma upplägg */}
-              <button
-                className={
-                  activeTab === "all" ? "btn-secondary active" : "btn-outline"
-                }
-                onClick={() => setActiveTab("all")}
-              >
-                Alla <span className="badge">{users.length}</span>
-              </button>
-            </div>
+            {/* Fliken Alla, samma upplägg */}
+            <button
+              className={
+                activeTab === "all" ? "btn-secondary active" : "btn-outline"
+              }
+              onClick={() => setActiveTab("all")}
+            >
+              Alla <span className="badge">{users.length}</span>
+            </button>
+          </div>
 
-            {/* Visas medan användarna hämtas */}
-            {loading && <p className="card-sub">Laddar användare...</p>}
-            {/* Visas om något gick fel */}
-            {error && <p className="card-sub">Något gick fel: {error}</p>}
+          {/* Visas medan användarna hämtas */}
+          {loading && <p className="card-sub">Laddar användare...</p>}
+          {/* Visas om något gick fel */}
+          {error && <p className="card-sub">Något gick fel: {error}</p>}
 
-            {/* Tabellen visas bara när det inte laddar och inget fel finns */}
-            {!loading && !error && (
-              <table className="admin-table">
-                {/* Tabellens rubrikrad */}
-                <thead>
-                  <tr>
-                    <th>NAMN OCH E-POST</th>
-                    <th>FÖRETAG</th>
-                    <th>REGISTRERAD</th>
-                    <th>ÅTGÄRD</th>
-                  </tr>
-                </thead>
-                {/* Tabellens innehåll */}
-                <tbody>
-                  {/* En rad per användare i den filtrerade listan. key hjälper React hålla koll */}
-                  {visibleUsers.map((user) => (
-                    <tr key={user.id}>
-                      {/* Kolumn 1: namn och e-post */}
-                      <td>
-                        <strong>{user.username}</strong>
-                        <br />
-                        <span className="card-sub">{user.email}</span>
-                      </td>
-                      {/* Kolumn 2: företaget (textfältet company_id i Strapi) */}
-                      <td>{user.company_id}</td>
-                      {/* Kolumn 3: registreringsdatum i kort format */}
-                      <td>{formatDate(user.createdAt)}</td>
-                      {/* Kolumn 4: knappar */}
-                      <td>
-                        <div className="item-actions user-actions">
-                          {user.blocked ? (
-                            <>
-                              <button
-                                className="btn-success"
-                                onClick={() => setBlocked(user.id, false)}
-                              >
-                                Godkänn
-                              </button>
-                              <button
-                                className="btn-danger"
-                                // Nekade konton raderas direkt: vi sparar inga uppgifter om någon som aldrig blev medlem (GDPR)
-                                onClick={() => deleteUser(user.id, user.username)}
-                              >
-                                Neka
-                              </button>
-                            </>
-                          ) : (
+          {/* Tabellen visas bara när det inte laddar och inget fel finns */}
+          {!loading && !error && (
+            <table className="admin-table">
+              {/* Tabellens rubrikrad */}
+              <thead>
+                <tr>
+                  <th>NAMN OCH E-POST</th>
+                  <th>FÖRETAG</th>
+                  <th>REGISTRERAD</th>
+                  <th>ÅTGÄRD</th>
+                </tr>
+              </thead>
+              {/* Tabellens innehåll */}
+              <tbody>
+                {/* En rad per användare i den filtrerade listan. key hjälper React hålla koll */}
+                {visibleUsers.map((user) => (
+                  <tr key={user.id}>
+                    {/* Kolumn 1: namn och e-post */}
+                    <td>
+                      <strong>{user.username}</strong>
+                      <br />
+                      <span className="card-sub">{user.email}</span>
+                    </td>
+                    {/* Kolumn 2: företaget (textfältet company_id i Strapi) */}
+                    <td>{user.company_id}</td>
+                    {/* Kolumn 3: registreringsdatum i kort format */}
+                    <td>{formatDate(user.createdAt)}</td>
+                    {/* Kolumn 4: knappar */}
+                    <td>
+                      <div className="item-actions user-actions">
+                        {user.blocked ? (
+                          <>
                             <button
-                              className="btn-outline"
-                              style={{ color: "#d9534f", borderColor: "#d9534f" }}
+                              className="btn-success"
+                              onClick={() => setBlocked(user.id, false)}
+                            >
+                              Godkänn
+                            </button>
+                            <button
+                              className="btn-danger"
+                              // Nekade konton raderas direkt: vi sparar inga uppgifter om någon som aldrig blev medlem (GDPR)
                               onClick={() => deleteUser(user.id, user.username)}
                             >
-                              Radera användare
+                              Neka
                             </button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                          </>
+                        ) : (
+                          <button
+                            className="btn-outline"
+                            style={{
+                              color: "#d9534f",
+                              borderColor: "#d9534f",
+                            }}
+                            onClick={() => deleteUser(user.id, user.username)}
+                          >
+                            Radera användare
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
 
-                  {/* Om listan är tom visas en rad som berättar det. colSpan=4 sträcker över alla kolumner */}
-                  {visibleUsers.length === 0 && (
-                    <tr>
-                      <td colSpan="4">Inga användare i den här listan.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            )}
-          </div>
+                {/* Om listan är tom visas en rad som berättar det. colSpan=4 sträcker över alla kolumner */}
+                {visibleUsers.length === 0 && (
+                  <tr>
+                    <td colSpan="4">Inga användare i den här listan.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 };
 

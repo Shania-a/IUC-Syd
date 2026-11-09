@@ -12,18 +12,6 @@ const AdminStartPage = () => {
   const [companyCount, setCompanyCount] = useState(0);
 
   // Logga ut-funktion
-  const handleLogout = async () => {
-    try {
-      await fetch(`${API_URL}/api/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-    } catch (err) {
-      console.error("Kunde inte logga ut:", err);
-    } finally {
-      navigate("/", { replace: true });
-    }
-  };
 
   // Hämta användare från Strapi
   const fetchUsers = async () => {
@@ -108,235 +96,199 @@ const AdminStartPage = () => {
   }
 
   return (
-    <div className="admin-layout">
-      {/* Mörkgrön sidomeny */}
-      <aside className="admin-sidebar">
-        <div className="sidebar-logo">
-          <h2>IUC Syd</h2>
-          <span>ADMINISTRATION</span>
-        </div>
-        <nav className="sidebar-nav">
-          <ul>
-            <Link to="/Admin">
-              <li className="active">Översikt</li>
-            </Link>
-            <Link to="/AdminUserPage">
-              <li>Användare</li>
-            </Link>
-            <Link to="/AdminCompanyPage">
-              <li>Företag</li>
-            </Link>
-            <Link to="/AdminModerationPage">
-              <li>Moderering</li>
-            </Link>
-            <Link to="/AdminMessagesPage">
-              <li>Privata meddelande</li>
-            </Link>
-            <li>
-              <button className="sidebar-logout" onClick={handleLogout}>
-                Logga ut
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-
+    <main className="admin-main-content">
       {/* Huvudinnehåll */}
-      <main className="admin-main-content">
-        <header className="admin-topbar">
-          <h1>Översikt</h1>
-          <div className="topbar-search">
-            <input
-              type="text"
-              placeholder="Sök i användare, företag, inlägg..."
-            />
-          </div>
-          <div className="topbar-user">
-            <span>IUC Syd – Administratör</span>
-          </div>
-        </header>
+      <header className="admin-topbar">
+        <h1>Översikt</h1>
+        <div className="topbar-search">
+          <input
+            type="text"
+            placeholder="Sök i användare, företag, inlägg..."
+          />
+        </div>
+        <div className="topbar-user">
+          <span>IUC Syd – Administratör</span>
+        </div>
+      </header>
 
-        <div className="admin-content-scroll">
-          {/* Siffror / Översikts-kort */}
-          <section className="stats-grid">
-            <Link to="/AdminUserPage">
-              <div className="stat-card">
-                <span className="stat-label">Användare att godkänna</span>
-                <span className="stat-number">{pendingUsers.length}</span>
-              </div>
-            </Link>
-            <Link to="/AdminCompanyPage">
-              <div className="stat-card">
-                <span className="stat-label">Antal företag</span>
-                <span className="stat-number">{companyCount}</span>
-              </div>
-            </Link>
+      <div className="admin-content-scroll">
+        {/* Siffror / Översikts-kort */}
+        <section className="stats-grid">
+          <Link to="/AdminUserPage">
             <div className="stat-card">
-              <span className="stat-label">Obesvarade privata meddelanden</span>
-              <span className="stat-number">3</span>
+              <span className="stat-label">Användare att godkänna</span>
+              <span className="stat-number">{pendingUsers.length}</span>
             </div>
+          </Link>
+          <Link to="/AdminCompanyPage">
             <div className="stat-card">
-              <span className="stat-label">Nya identifierade behov</span>
-              <span className="stat-number">4</span>
+              <span className="stat-label">Antal företag</span>
+              <span className="stat-number">{companyCount}</span>
             </div>
-          </section>
+          </Link>
+          <div className="stat-card">
+            <span className="stat-label">Obesvarade privata meddelanden</span>
+            <span className="stat-number">3</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-label">Nya identifierade behov</span>
+            <span className="stat-number">4</span>
+          </div>
+        </section>
 
-          {/* Sektioner med listor */}
-          <div className="dashboard-grid">
-            {/* Vänster kolumn */}
-            <div className="dashboard-column">
-              {/* Användare att godkänna (kopplad till Strapi!) */}
-              <div className="admin-card">
-                <div className="card-header">
-                  <h3>Användare att godkänna</h3>
-                  <span className="card-sub">
-                    Visar vem som vill bli medlem i IUC Syds gemenskap
-                  </span>
-                </div>
-                <ul className="item-list">
-                  {pendingUsers.length > 0 ? (
-                    pendingUsers.map((user) => (
-                      <li key={user.id} className="list-item">
-                        <div className="item-info">
-                          <p>Namn: </p>
-                          <strong>{user.username}</strong>
-                        </div>
-                        <div>
-                          <p>Företag: </p>
-                          <span>{user.company_id || "Inget företag"}</span>
-                        </div>
-                        <div className="item-meta">
-                          <p>Email:</p>
-                          <span>{user.email}</span>
-                        </div>
-                        <div className="item-actions">
-                          <button
-                            className="btn-success"
-                            onClick={() => setBlocked(user.id, false)}
-                          >
-                            Godkänn
-                          </button>
-                        </div>
-                      </li>
-                    ))
-                  ) : (
-                    <p style={{ padding: "10px", color: "#666" }}>
-                      Inga användare väntar på godkännande.
-                    </p>
-                  )}
-                </ul>
+        {/* Sektioner med listor */}
+        <div className="dashboard-grid">
+          {/* Vänster kolumn */}
+          <div className="dashboard-column">
+            {/* Användare att godkänna (kopplad till Strapi!) */}
+            <div className="admin-card">
+              <div className="card-header">
+                <h3>Användare att godkänna</h3>
+                <span className="card-sub">
+                  Visar vem som vill bli medlem i IUC Syds gemenskap
+                </span>
               </div>
+              <ul className="item-list">
+                {pendingUsers.length > 0 ? (
+                  pendingUsers.map((user) => (
+                    <li key={user.id} className="list-item">
+                      <div className="item-info">
+                        <p>Namn: </p>
+                        <strong>{user.username}</strong>
+                      </div>
+                      <div>
+                        <p>Företag: </p>
+                        <span>{user.company_id || "Inget företag"}</span>
+                      </div>
+                      <div className="item-meta">
+                        <p>Email:</p>
+                        <span>{user.email}</span>
+                      </div>
+                      <div className="item-actions">
+                        <button
+                          className="btn-success"
+                          onClick={() => setBlocked(user.id, false)}
+                        >
+                          Godkänn
+                        </button>
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <p style={{ padding: "10px", color: "#666" }}>
+                    Inga användare väntar på godkännande.
+                  </p>
+                )}
+              </ul>
+            </div>
 
-              {/* Moderering av community */}
-              <div className="admin-card">
-                <div className="card-header">
-                  <h3>Moderering av community</h3>
-                  <span className="card-sub">
-                    Inlägg som väntar på granskning
-                  </span>
-                </div>
-                <div className="moderation-item">
-                  <span className="badge warning">Anmält inlägg</span>
-                  <p>
-                    <strong>WORLD 3D DESIGN:</strong> "Tack till Danne Wissen -
-                    Tredimensionell Formgivning AB..."
-                  </p>
-                  <p className="mod-quote">
-                    Vi bytte leverantör och är väldigt nöjda. Kontakta oss så
-                    berättar vi vilken..."
-                  </p>
-                  <div className="mod-actions">
-                    <button className="btn-primary">Godkänn</button>
-                    <button className="btn-danger">Ta bort</button>
-                  </div>
+            {/* Moderering av community */}
+            <div className="admin-card">
+              <div className="card-header">
+                <h3>Moderering av community</h3>
+                <span className="card-sub">
+                  Inlägg som väntar på granskning
+                </span>
+              </div>
+              <div className="moderation-item">
+                <span className="badge warning">Anmält inlägg</span>
+                <p>
+                  <strong>WORLD 3D DESIGN:</strong> "Tack till Danne Wissen -
+                  Tredimensionell Formgivning AB..."
+                </p>
+                <p className="mod-quote">
+                  Vi bytte leverantör och är väldigt nöjda. Kontakta oss så
+                  berättar vi vilken..."
+                </p>
+                <div className="mod-actions">
+                  <button className="btn-primary">Godkänn</button>
+                  <button className="btn-danger">Ta bort</button>
                 </div>
               </div>
+            </div>
 
-              {/* Företag och huvudkontakt */}
-              {/********fixa så att man skrollar i rutan och att rutan inte blir större*********/}
-              <div className="admin-card">
-                <div className="card-header">
-                  <h3>Företag och huvudkontakt</h3>
-                  <Link to="/AdminCompanyPage" className="btn-small">
-                    Hantera företag
-                  </Link>
-                </div>
-                <table className="admin-table">
-                  <thead>
-                    <tr>
-                      <th>FÖRETAG/ORGANISATION</th>
-                      <th>HUVUDKONTAKT</th>
+            {/* Företag och huvudkontakt */}
+            {/********fixa så att man skrollar i rutan och att rutan inte blir större*********/}
+            <div className="admin-card">
+              <div className="card-header">
+                <h3>Företag och huvudkontakt</h3>
+                <Link to="/AdminCompanyPage" className="btn-small">
+                  Hantera företag
+                </Link>
+              </div>
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>FÖRETAG/ORGANISATION</th>
+                    <th>HUVUDKONTAKT</th>
 
-                      <th>ÅTGÄRD</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {companies.map((comp) => {
-                      const compId = comp.documentId || comp.id;
-                      return (
-                        <tr key={compId}>
-                          <td>
-                            <strong>{comp.name}</strong>
-                            <br />
-                            <span className="card-sub">{comp.city}</span>
-                          </td>
-                          <td>
-                            {comp.contactName}
-                            <br />
-                            <span className="card-sub">
-                              {comp.contactEmail}
-                            </span>
-                          </td>
+                    <th>ÅTGÄRD</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {companies.map((comp) => {
+                    const compId = comp.documentId || comp.id;
+                    return (
+                      <tr key={compId}>
+                        <td>
+                          <strong>{comp.name}</strong>
+                          <br />
+                          <span className="card-sub">{comp.city}</span>
+                        </td>
+                        <td>
+                          {comp.contactName}
+                          <br />
+                          <span className="card-sub">{comp.contactEmail}</span>
+                        </td>
 
-                          <td>
-                            <Link to="/AdminCompanyPage" className="btn-text">
-                              Hantera
-                            </Link>
-                          </td>
-                        </tr>
-                      );
-                    })}
-
-                    {companies.length === 0 && (
-                      <tr>
-                        <td colSpan="4">Inga företag hittades.</td>
+                        <td>
+                          <Link to="/AdminCompanyPage" className="btn-text">
+                            Hantera
+                          </Link>
+                        </td>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+                    );
+                  })}
 
-            {/* Höger kolumn */}
-            <div className="dashboard-column">
-              {/* Privata meddelanden */}
-              <div className="admin-card">
-                <div className="card-header">
-                  <h3>Privata meddelanden</h3>
-                  <span className="link-text">Visa alla (3 st)</span>
-                </div>
-                <ul className="item-list compact">
-                  <li className="list-item">
-                    <div>
-                      <strong>Vd och huvudkontakt</strong>
-                      <p>Jonas Håkansson - Syntec Componenter AB / Inlägg</p>
-                    </div>
-                    <button className="btn-secondary">Öppna</button>
-                  </li>
-                  <li className="list-item">
-                    <div>
-                      <strong>Anmälan till event</strong>
-                      <p>Mikael Berg - Skåne Plast AB / Event</p>
-                    </div>
-                    <button className="btn-secondary">Öppna</button>
-                  </li>
-                </ul>
+                  {companies.length === 0 && (
+                    <tr>
+                      <td colSpan="4">Inga företag hittades.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Höger kolumn */}
+          <div className="dashboard-column">
+            {/* Privata meddelanden */}
+            <div className="admin-card">
+              <div className="card-header">
+                <h3>Privata meddelanden</h3>
+                <span className="link-text">Visa alla (3 st)</span>
               </div>
+              <ul className="item-list compact">
+                <li className="list-item">
+                  <div>
+                    <strong>Vd och huvudkontakt</strong>
+                    <p>Jonas Håkansson - Syntec Componenter AB / Inlägg</p>
+                  </div>
+                  <button className="btn-secondary">Öppna</button>
+                </li>
+                <li className="list-item">
+                  <div>
+                    <strong>Anmälan till event</strong>
+                    <p>Mikael Berg - Skåne Plast AB / Event</p>
+                  </div>
+                  <button className="btn-secondary">Öppna</button>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 };
 

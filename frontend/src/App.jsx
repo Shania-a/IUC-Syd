@@ -3,6 +3,8 @@
 
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import LayoutWithNav from "./Routes/LayoutWithNav";
+import LayoutAdmin from "./Routes/LayoutAdmin";
 
 // Sidor för medlemmarna
 import Headers from "./Global_function/Headers";
@@ -30,17 +32,23 @@ function App() {
         <Route path="/" element={<Log_in />} />
         <Route path="/sign_up" element={<Sign_up />} />
 
-        {/* user path */}
-        <Route path="/Start_sida" element={<Start_sida />} />
-        <Route path="/mitt_foretag" element={<MittForetag />} />
-        <Route path="/user_messages" element={<UserMessagesPage />} />
-
-        {/* admin path */}
-        <Route path="/admin" element={<AdminStartPage />} />
-        <Route path="/AdminUserPage" element={<AdminUserPage />} />
-        <Route path="/AdminCompanyPage" element={<AdminCompanyPage />} />
-        <Route path="/AdminMessagesPage" element={<AdminMessagesPage />} />
-        <Route path="/AdminModerationPage" element={<AdminModerationPage />} />
+        <Route element={<LayoutWithNav />}>
+          {/* user path */}
+          <Route path="/Start_sida" element={<Start_sida />} />
+          <Route path="/mitt_foretag" element={<MittForetag />} />
+          <Route path="/user_messages" element={<UserMessagesPage />} />
+        </Route>
+        <Route element={<LayoutAdmin />}>
+          {/* admin path */}
+          <Route path="/admin" element={<AdminStartPage />} />
+          <Route path="/AdminUserPage" element={<AdminUserPage />} />
+          <Route path="/AdminCompanyPage" element={<AdminCompanyPage />} />
+          <Route path="/AdminMessagesPage" element={<AdminMessagesPage />} />
+          <Route
+            path="/AdminModerationPage"
+            element={<AdminModerationPage />}
+          />
+        </Route>
 
         {/* path="*" betyder "alla andra adresser" */}
         <Route path="*" element={<h1>404 – Sidan hittades inte</h1>} />
