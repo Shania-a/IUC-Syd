@@ -11,6 +11,7 @@ import Log_in from "./Sign_in/Log_in";
 import Sign_up from "./register/Sign_up";
 import Start_sida from "./stardSidan/Stard_sidan";
 import MittForetag from "./stardSidan/MittForetag";
+import UserMessagesPage from "./stardSidan/UserMessagesPage";
 
 // Sidor för admin
 import AdminStartPage from "./admin/AdminStartPage";
@@ -28,8 +29,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Log_in />} />
         <Route path="/sign_up" element={<Sign_up />} />
+
+        {/* user path */}
         <Route path="/Start_sida" element={<Start_sida />} />
         <Route path="/mitt_foretag" element={<MittForetag />} />
+        <Route path="/user_messages" element={<UserMessagesPage />} />
 
         {/* admin path */}
         <Route path="/admin" element={<AdminStartPage />} />

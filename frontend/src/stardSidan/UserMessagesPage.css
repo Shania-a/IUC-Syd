@@ -1,0 +1,138 @@
+.messages-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+.messages-page h1 {
+  margin: 0 0 24px;
+}
+
+/* Flikar */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  padding: 10px 20px;
+  border: 1px solid #004a55;
+  border-radius: 6px;
+  background: #fff;
+  color: #004a55;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #004a55;
+}
+
+/* Formulär */
+.messages-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.messages-form > label {
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+.messages-form > label:first-child {
+  margin-top: 0;
+}
+
+.messages-form input[type="text"],
+.messages-form textarea,
+.message-list input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #c4c4c4;
+  border-radius: 6px;
+  font: inherit;
+  background: #fff;
+}
+
+.messages-form input[type="text"]:focus,
+.messages-form textarea:focus {
+  outline: 2px solid #004a55;
+  outline-offset: 1px;
+}
+
+.messages-form textarea {
+  resize: vertical;
+}
+
+.user-list {
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #c4c4c4;
+  border-radius: 6px;
+}
+
+.messages-form .user-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px 12px;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.user-item:hover {
+  background: #eef3f4;
+}
+
+.messages-form button[type="submit"] {
+  align-self: flex-start;
+  margin-top: 16px;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  background: #004a55;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.messages-form button[type="submit"]:hover {
+  background: #003640;
+}
+
+/* Meddelandelista */
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message-item {
+  padding: 16px 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.message-item h3 {
+  margin: 0 0 4px;
+}
+
+.message-item small {
+  color: #666;
+}
+
+.message-item p {
+  margin: 12px 0 0;
+  white-space: pre-wrap;
+}
