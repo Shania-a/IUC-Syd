@@ -11,7 +11,7 @@ function Start_sida() {
   return (
     <>
       {/* IStället för Anna ska vi byta ut den för den användaren som är inlogad*/}
-      <h2>Välkomen tillbaka, Anna</h2>
+      <h2>Välkommen tillbaka, Anna</h2>
       <div className="card">
         <div className="card-body">
           <h4 className="card-title">Beskriv en utmaning eller ett behov</h4>

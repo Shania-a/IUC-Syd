@@ -43,7 +43,7 @@ function LayoutAdmin() {
             </Link>
 
             <Link to="/AdminMessagesPage">
-              <li>Privata medelande</li>
+              <li>Privata meddelande</li>
             </Link>
             <li>
               <button className="sidebar-logout" onClick={handleLogout}>
