@@ -1,0 +1,59 @@
+{
+  "kind": "collectionType",
+  "collectionName": "posts",
+  "info": {
+    "singularName": "post",
+    "pluralName": "posts",
+    "displayName": "Post",
+    "description": "Inlägg som medlemmar publicerar i communityt"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "content": {
+      "type": "text",
+      "required": true,
+      "maxLength": 2000
+    },
+    "postType": {
+      "type": "enumeration",
+      "required": true,
+      "default": "fraga",
+      "enum": [
+        "fraga",
+        "samarbete",
+        "erfarenhet"
+      ]
+    },
+    "topic": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "effektivisering",
+        "automation",
+        "ai",
+        "digitalisering",
+        "hallbarhet",
+        "affarsutveckling",
+        "kompetensutveckling",
+        "cybersakerhet",
+        "produktutveckling",
+        "rekrytering",
+        "annat"
+      ]
+    },
+    "author": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "post"
+    }
+  }
+}

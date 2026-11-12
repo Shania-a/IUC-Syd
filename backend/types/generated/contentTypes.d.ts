@@ -443,6 +443,44 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCommentComment extends Struct.CollectionTypeSchema {
+  collectionName: 'comments';
+  info: {
+    description: 'Kommentarer p\u00E5 inl\u00E4gg i communityt';
+    displayName: 'Comment';
+    pluralName: 'comments';
+    singularName: 'comment';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    author: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    content: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 1000;
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::comment.comment'
+    > &
+      Schema.Attribute.Private;
+    post: Schema.Attribute.Relation<'manyToOne', 'api::post.post'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
   collectionName: 'companies';
   info: {
@@ -556,6 +594,62 @@ export interface ApiMessageMessage extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPostPost extends Struct.CollectionTypeSchema {
+  collectionName: 'posts';
+  info: {
+    description: 'Inl\u00E4gg som medlemmar publicerar i communityt';
+    displayName: 'Post';
+    pluralName: 'posts';
+    singularName: 'post';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    author: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    comments: Schema.Attribute.Relation<'oneToMany', 'api::comment.comment'>;
+    content: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 2000;
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::post.post'> &
+      Schema.Attribute.Private;
+    postType: Schema.Attribute.Enumeration<
+      ['fraga', 'samarbete', 'erfarenhet']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'fraga'>;
+    publishedAt: Schema.Attribute.DateTime;
+    topic: Schema.Attribute.Enumeration<
+      [
+        'effektivisering',
+        'automation',
+        'ai',
+        'digitalisering',
+        'hallbarhet',
+        'affarsutveckling',
+        'kompetensutveckling',
+        'cybersakerhet',
+        'produktutveckling',
+        'rekrytering',
+        'annat',
+      ]
+    > &
+      Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1073,9 +1167,11 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::comment.comment': ApiCommentComment;
       'api::company.company': ApiCompanyCompany;
       'api::contact-person.contact-person': ApiContactPersonContactPerson;
       'api::message.message': ApiMessageMessage;
+      'api::post.post': ApiPostPost;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

@@ -1,0 +1,79 @@
+/* Ett inlägg i communityt.
+   Färger och typsnitt kommer från variablerna på .mf-page i MittForetag.css,
+   så kortet måste ligga inuti ett element med klassen mf-page. */
+
+.pc-card {
+  padding: 1.25rem 1.5rem;
+  background: var(--mf-surface);
+  border: 1px solid var(--mf-border);
+  border-radius: 14px;
+}
+
+.pc-card-new {
+  border-color: var(--mf-accent);
+  box-shadow: 0 0 0 3px var(--mf-focus);
+}
+
+/* background behövs eftersom App.css ger alla header-element en ljusblå bakgrund. */
+.pc-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  background: transparent;
+}
+
+.pc-author {
+  flex: 1;
+  min-width: 0;
+}
+
+.pc-author-name {
+  margin: 0;
+  font-weight: 600;
+}
+
+.pc-company,
+.pc-time {
+  margin: 0;
+  color: var(--mf-text-muted);
+  font-size: 0.88rem;
+}
+
+.pc-time {
+  flex: none;
+}
+
+.pc-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.75rem;
+}
+
+/* pre-wrap behåller radbrytningarna som författaren skrev. */
+.pc-content {
+  max-width: 70ch;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.pc-new-note {
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.85rem;
+  background: var(--mf-mint);
+  border-radius: 8px;
+  color: var(--mf-mint-text);
+  font-size: 0.92rem;
+}
+
+/* Långa ämnesnamn får radbrytas på smala skärmar. */
+.pc-badges .mf-badge {
+  white-space: normal;
+}
+
+.pc-author-name .mf-badge {
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}

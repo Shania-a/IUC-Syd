@@ -12,6 +12,7 @@ import Footer from "./Global_function/Footer";
 import Log_in from "./Sign_in/Log_in";
 import Sign_up from "./register/Sign_up";
 import Start_sida from "./stardSidan/Stard_sidan";
+import Community from "./stardSidan/community/Community";
 import MittForetag from "./stardSidan/MittForetag";
 import UserMessagesPage from "./stardSidan/UserMessagesPage";
 
@@ -35,6 +36,7 @@ function App() {
         <Route element={<LayoutWithNav />}>
           {/* user path */}
           <Route path="/Start_sida" element={<Start_sida />} />
+          <Route path="/community" element={<Community />} />
           <Route path="/mitt_foretag" element={<MittForetag />} />
           <Route path="/user_messages" element={<UserMessagesPage />} />
         </Route>

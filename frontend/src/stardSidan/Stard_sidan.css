@@ -1,0 +1,222 @@
+/* Startsidan.
+   Sidan ligger i .mf-page och återanvänder färger, typsnitt, knappar och
+   etiketter från MittForetag.css. Här finns bara det som är eget för startsidan.
+   Alla klasser börjar med st-. */
+
+/* Layout.
+   Smal skärm: allt i en spalt i ordningen profil, IUC Syd, flöde.
+   Bred skärm: tre spalter med flödet i mitten, som i andra flöden. */
+
+.mf-container.st-layout {
+  display: grid;
+  grid-template-areas:
+    "profile"
+    "iuc"
+    "feed";
+  gap: 1.5rem;
+  max-width: 680px;
+}
+
+@media (min-width: 1100px) {
+  .mf-container.st-layout {
+    grid-template-areas: "profile feed iuc";
+    grid-template-columns: 250px minmax(0, 1fr) 310px;
+    align-items: start;
+    max-width: 1280px;
+  }
+
+  /* Sidospalterna ligger kvar när man skrollar i flödet. */
+  .st-profile,
+  .st-iuc {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+/* Profilkortet */
+
+.mf-card.st-profile {
+  grid-area: profile;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  padding: 1.25rem;
+}
+
+.st-profile-avatar {
+  width: 3rem;
+  height: 3rem;
+  font-size: 1rem;
+}
+
+.st-profile-text {
+  flex: 1;
+  min-width: 10rem;
+}
+
+.st-welcome {
+  margin: 0 0 0.15rem;
+  font-family: var(--mf-font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.st-profile-link {
+  flex-basis: 100%;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--mf-border);
+}
+
+/* Länkar */
+
+.st-link {
+  color: var(--mf-accent);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.st-link:hover {
+  color: var(--mf-accent-hover);
+}
+
+.st-link:focus-visible {
+  outline: 3px solid var(--mf-focus);
+  outline-offset: 2px;
+}
+
+/* Flödet */
+
+.st-feed {
+  grid-area: feed;
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.st-feed-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.st-feed-title {
+  margin: 0;
+  font-family: var(--mf-font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+/* Spalten från IUC Syd.
+   Den mörka listen skiljer det IUC Syd publicerar från medlemmarnas inlägg. */
+
+.st-iuc {
+  grid-area: iuc;
+  overflow: hidden;
+  background: var(--mf-surface);
+  border: 1px solid var(--mf-accent-dark);
+  border-radius: 14px;
+}
+
+.st-iuc-title {
+  margin: 0;
+  padding: 0.7rem 1.25rem;
+  background: var(--mf-accent-dark);
+  color: #ffffff;
+  font-family: var(--mf-font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.st-iuc-body {
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.st-iuc-heading {
+  margin: 0;
+  color: var(--mf-text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.st-list + .st-iuc-heading {
+  margin-top: 1.25rem;
+}
+
+.st-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.st-news,
+.st-event {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--mf-border);
+}
+
+.st-news:last-child,
+.st-event:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.st-pinned {
+  margin-bottom: 0.35rem;
+}
+
+.st-item-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.st-item-detail {
+  display: block;
+  margin: 0;
+  color: var(--mf-text-muted);
+  font-size: 0.85rem;
+}
+
+.st-event {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.st-event-date {
+  display: grid;
+  flex: none;
+  align-content: center;
+  justify-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: var(--mf-mint);
+  border-radius: 8px;
+  color: var(--mf-mint-text);
+}
+
+.st-event-day {
+  font-family: var(--mf-font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.st-event-month {
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.st-event-text {
+  min-width: 0;
+}
+
+.st-iuc-footnote {
+  margin: 0.9rem 0 0;
+  color: var(--mf-text-muted);
+  font-size: 0.82rem;
+}

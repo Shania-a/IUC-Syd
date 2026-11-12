@@ -1,0 +1,48 @@
+/* Communitysidan.
+   Sidan ligger i .mf-page och återanvänder kort, fält och knappar från
+   MittForetag.css. Här finns bara det som är eget för communityt.
+   Alla klasser börjar med cm-. */
+
+/* Smalare än övriga sidor så att raderna i inläggen inte blir för långa. */
+.mf-container.cm-container {
+  max-width: 820px;
+}
+
+.cm-form {
+  margin-bottom: 2.5rem;
+}
+
+/* Flödet */
+
+.cm-feed-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.cm-feed-title {
+  margin: 0;
+  font-family: var(--mf-font-heading);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.cm-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.cm-filter-select {
+  width: auto;
+  max-width: 100%;
+}
+
+.cm-feed {
+  display: grid;
+  gap: 1rem;
+}

@@ -25,6 +25,7 @@ function LayoutWithNav() {
         <div className="user-nav-inner">
           {/* NavLink lägger automatiskt klassen "active" på sidan du står på */}
           <NavLink to="/Start_sida">Start</NavLink>
+          <NavLink to="/community">Community</NavLink>
           <NavLink to="/mitt_foretag">Mitt företag</NavLink>
           <NavLink to="/user_messages">Meddelanden</NavLink>
           <button onClick={handleLogout} className="logout-btn-userPage">

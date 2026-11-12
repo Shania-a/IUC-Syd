@@ -1,0 +1,106 @@
+/* Kommentarerna under ett inlägg.
+   Färger kommer från variablerna på .mf-page i MittForetag.css.
+   Alla egna klasser börjar med cs-. */
+
+.cs-section {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--mf-border);
+}
+
+.cs-toggle {
+  padding: 0.25rem 0;
+  background: none;
+  border: 0;
+  color: var(--mf-accent);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cs-toggle:hover {
+  color: var(--mf-accent-hover);
+  text-decoration: underline;
+}
+
+.cs-toggle:focus-visible {
+  outline: 3px solid var(--mf-focus);
+  outline-offset: 2px;
+}
+
+.cs-list {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cs-comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.cs-avatar {
+  width: 1.9rem;
+  height: 1.9rem;
+  font-size: 0.68rem;
+}
+
+.cs-bubble {
+  flex: 1;
+  min-width: 0;
+  padding: 0.6rem 0.85rem;
+  background: var(--mf-surface-muted);
+  border-radius: 10px;
+}
+
+/* Svar från IUC Syd får en egen färg så att de går att skilja från medlemmarnas. */
+.cs-bubble-iuc {
+  background: var(--mf-mint);
+}
+
+.cs-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem 0.6rem;
+  margin: 0 0 0.2rem;
+  color: var(--mf-text-muted);
+  font-size: 0.85rem;
+}
+
+.cs-author {
+  color: var(--mf-text);
+  font-weight: 600;
+}
+
+.cs-time {
+  margin-left: auto;
+}
+
+/* pre-wrap behåller radbrytningar, anywhere bryter långa länkar. */
+.cs-content {
+  margin: 0;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.cs-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.cs-input {
+  flex: 1;
+  min-width: 0;
+  border-radius: 999px;
+}
+
+.cs-error {
+  margin: 0.6rem 0 0;
+}
